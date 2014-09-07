@@ -1,0 +1,15 @@
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\portal.c
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h
+.\build\portal.o: .\rtconfig.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h
+.\build\portal.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\stdarg.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\rtdevice.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/spi.h
+.\build\portal.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h
+.\build\portal.o: ..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h
