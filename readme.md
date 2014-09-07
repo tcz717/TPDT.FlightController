@@ -1,4 +1,4 @@
-This is a project about `Flight Controler'.
+This is a project about `Flight Controler`.
 ===========================================
 Based on:
 * STM32
