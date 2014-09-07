@@ -3,4 +3,5 @@ build/
 *.crf
 *.[dD]
 *.bak
-
+*.bin
+*.dep
