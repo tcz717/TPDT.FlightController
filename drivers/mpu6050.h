@@ -1,4 +1,3 @@
-/
 #ifndef _MPU6050_H_
 #define _MPU6050_H_
 
@@ -6,8 +5,6 @@
  extern "C" ;
 #endif 
 
- /* Includes */
-#include "HAL_MPU6050.h" 
 #include "stm32f10x.h"   
 
 #define MPU6050_ADDRESS_AD0_LOW     0x68 // address pin low (GND), default for InvenSense evaluation board
@@ -366,9 +363,10 @@
 #include <rthw.h>
 #include <rtthread.h>
 #include <rtdevice.h>
+#include "i2c1.h"
 
-rt_err_t mpu6050_init(void);
-bool MPU6050_TestConnection(void);
+rt_err_t mpu6050_init(const char *);
+rt_bool_t MPU6050_TestConnection(void);
 
 // GYRO_CONFIG register
 uint8_t MPU6050_GetFullScaleGyroRange(void);
@@ -378,7 +376,7 @@ uint8_t MPU6050_GetFullScaleAccelRange(void);
 void MPU6050_SetFullScaleAccelRange(uint8_t range);
 
 // PWR_MGMT_1 register
-bool MPU6050_GetSleepModeStatus(void);
+rt_bool_t MPU6050_GetSleepModeStatus(void);
 void MPU6050_SetSleepModeStatus(FunctionalState NewState);
 void MPU6050_SetClockSource(uint8_t source);
 // WHO_AM_I register

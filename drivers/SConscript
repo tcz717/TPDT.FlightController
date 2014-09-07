@@ -13,6 +13,7 @@ usart.c
 i2c1.c
 bmp085.c
 spi2.c
+mpu6050.c
 """)
 
 # add Ethernet drvers.

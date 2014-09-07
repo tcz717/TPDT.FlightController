@@ -1,4 +1,3 @@
-
 #include "MPU6050.h"          
 
 static struct rt_i2c_bus_device * i2c_device;
@@ -20,24 +19,25 @@ rt_err_t mpu6050_init(const char * i2c_bus_device_name)
     }
 	
 	RCC_Configuration();
-	NVIC_Configuration();
+	GPIO_Configuration();
 	
     MPU6050_SetClockSource(MPU6050_CLOCK_PLL_XGYRO);
     MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_500);
     MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);
     MPU6050_SetSleepModeStatus(DISABLE); 
+	return RT_EOK;
 }
 
 /** Verify the I2C connection.
  * Make sure the device is connected and responds as expected.
  * @return True if connection is valid, FALSE otherwise
  */
-bool MPU6050_TestConnection() 
+rt_bool_t MPU6050_TestConnection() 
 {
     if(MPU6050_GetDeviceID() == 0x34) //0b110100; 8-bit representation in hex = 0x34
-      return TRUE;
+      return RT_TRUE;
     else
-      return FALSE;
+      return RT_FALSE;
 }
 // WHO_AM_I register
 
@@ -170,14 +170,14 @@ void MPU6050_SetFullScaleAccelRange(uint8_t range)
  * @see MPU6050_RA_PWR_MGMT_1
  * @see MPU6050_PWR1_SLEEP_BIT
  */
-bool MPU6050_GetSleepModeStatus() 
+rt_bool_t MPU6050_GetSleepModeStatus() 
 {
     uint8_t tmp;
     MPU6050_ReadBit(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_SLEEP_BIT, &tmp);
     if(tmp == 0x00)
-      return FALSE;
+      return RT_FALSE;
     else
-      return TRUE;    
+      return RT_TRUE;    
 }
 /** Set sleep mode status.
  * @param enabled New sleep mode enabled status
@@ -307,5 +307,5 @@ void MPU6050_I2C_ByteWrite(u8 slaveAddr, u8* pBuffer, u8 writeAddr)
 
 void MPU6050_I2C_BufferRead(u8 slaveAddr, u8* pBuffer, u8 readAddr, u16 NumByteToRead)
 {
-	i2c_register_read(i2c_device,slaveAddr,readAddr,pBuffer,NumByteToRead)
+	i2c_register_read(i2c_device,slaveAddr,readAddr,pBuffer,NumByteToRead);
 }
