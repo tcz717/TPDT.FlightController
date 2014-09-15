@@ -83,7 +83,8 @@
 /* 自定义功能 */
 #define RT_USING_I2C
 #define RT_USING_SPI
-//#define RT_I2C_DEBUG
+#define RT_USING_W25QXX
+#define RT_I2C_DEBUG
 
 /* SECTION: device filesystem */
 /* #define RT_USING_DFS */

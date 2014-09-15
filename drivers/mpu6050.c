@@ -1,4 +1,5 @@
-#include "MPU6050.h"          
+#include "MPU6050.h"   
+#include <components.h>       
 
 static struct rt_i2c_bus_device * i2c_device;
 
@@ -8,6 +9,23 @@ static void RCC_Configuration(void)
 static void GPIO_Configuration(void)
 {
 }
+
+void get_mpu6050()
+{
+	s16 AccelGyro[6];
+	MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_1000);
+	MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);
+	if( MPU6050_TestConnection())
+	{
+		MPU6050_GetRawAccelGyro(AccelGyro);
+		rt_kprintf("%d,%d,%d,%d,%d,%d",AccelGyro[0],AccelGyro[1],
+		AccelGyro[2],AccelGyro[3],
+		AccelGyro[4],AccelGyro[5]);
+	}
+	else
+		rt_kprintf("mpu6050 connection error.");
+}
+FINSH_FUNCTION_EXPORT(get_mpu6050, get mpu6050 data)
 
 rt_err_t mpu6050_init(const char * i2c_bus_device_name)
 {

@@ -1,5 +1,5 @@
-#ifndef __IIC1_H__
-#define __IIC1_H__
+#ifndef __SPI2_H__
+#define __SPI2_H__
 
 #include <rthw.h>
 #include <rtthread.h>
