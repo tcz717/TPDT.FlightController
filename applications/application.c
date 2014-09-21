@@ -7,6 +7,7 @@
 #include "bmp085.h"
 #include "MPU6050.h"
 #include "ahrs.h"  
+#include "bluetooth.h"
 
 #ifdef RT_USING_DFS
 /* dfs filesystem:ELM filesystem init */
@@ -78,9 +79,24 @@ void mpu6050_thread_entry(void* parameter)
 
 void rt_init_thread_entry(void* parameter)
 {
+    GPIO_InitTypeDef GPIO_InitStructure;
     rt_components_init();
 	
+	rt_hw_bluetooth_init();
+//	rt_console_set_device("bt1");
+//    finsh_set_device("bt1");
+	
     finsh_set_device(RT_CONSOLE_DEVICE_NAME);
+	
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB  , ENABLE);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	
+	GPIO_ResetBits(GPIOB,GPIO_Pin_7);
+	
+	//while(1)rt_kprintf("%d\n", GPIOB->IDR&GPIO_Pin_7);
 	
 	rt_hw_i2c1_init();
 //	bmp085_init("i2c1");

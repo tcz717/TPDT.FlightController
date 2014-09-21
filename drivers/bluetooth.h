@@ -1,17 +1,13 @@
-#ifndef __USART_H
-#define __USART_H
+#ifndef __BT_H
+#define __BT_H
 #include <stm32f10x.h>
-#include "stdio.h"	
-#include "sys.h" 
-#include "Queue.h"
+#include <rthw.h>
+#include <rtthread.h>
 
-#define USART_LEN  			256
+#define UART_ENABLE_IRQ(n)            NVIC_EnableIRQ((n))
+#define UART_DISABLE_IRQ(n)           NVIC_DisableIRQ((n))
 	  	
-extern u8 RecLineFlag;
-extern u8 TCFlag;
-extern queue USART_RX_BUF;
-void uart_init(u32 bound);
-void usart_flush(void);
+void rt_hw_bluetooth_init(void);
 #endif
 
 

@@ -85,7 +85,7 @@ static rt_size_t i2c1_recv_bytes(struct rt_i2c_msg *msg)
 		
 		DMA_Cmd(DMAx_RX_CHANNEL, ENABLE);
 	}
-	//TODO: Check finshed
+	//Check finshed
 	if(rt_sem_take(&DMA_RX_Sem,20)!=RT_EOK)
 		return 0;
     return len;
@@ -129,7 +129,7 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
 	I2C_GenerateSTART(I2Cx, ENABLE);
     /* Test on EV5 and clear it */
     while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
-		CHECKTIME(tick);
+		rt_kprintf("%d\n", GPIOB->IDR&GPIO_Pin_7);//CHECKTIME(tick);
 
     for (i = 0; i < num; i++)
     {
