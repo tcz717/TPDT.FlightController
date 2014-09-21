@@ -39,7 +39,7 @@
 #define CHECKTIME(TIME)		if(rt_tick_get()>(TIME)+1){ret=-RT_ETIMEOUT;goto out;}
 
 static struct rt_i2c_bus_device i2c_bus1;
-//TODO:Add TX and RX DMA Semaphore
+//TX and RX DMA Semaphore
 static struct rt_semaphore DMA_RX_Sem;
 static struct rt_semaphore DMA_TX_Sem;
 static rt_size_t i2c1_recv_bytes(struct rt_i2c_msg *msg)
@@ -112,7 +112,7 @@ static rt_size_t stm32_i2c_send_bytes(struct rt_i2c_msg *msg)
 	I2C_DMACmd(I2Cx,ENABLE);
 	DMA_Cmd(DMAx_TX_CHANNEL, ENABLE);
 
-	//TODO: Check finshed
+	//Check finshed
 	if(rt_sem_take(&DMA_TX_Sem,20)!=RT_EOK)
 		return 0;
     return len;
