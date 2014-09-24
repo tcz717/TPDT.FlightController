@@ -14,7 +14,7 @@
 #define I2Cx_SDA_GPIO_CLK     RCC_APB2Periph_GPIOB
 
 #define I2Cx_DR_ADDR          ((u32)&I2C1->DR)
-#define I2Cx_SPEED            ((u32)400000)
+#define I2Cx_SPEED            ((u32)100000)
 
 #define DMAx                  DMA1
 #define DMAx_CLK              RCC_AHB1Periph_DMA1
@@ -42,6 +42,7 @@ static struct rt_i2c_bus_device i2c_bus1;
 //TX and RX DMA Semaphore
 static struct rt_semaphore DMA_RX_Sem;
 static struct rt_semaphore DMA_TX_Sem;
+static rt_bool_t nostart;
 static rt_size_t i2c1_recv_bytes(struct rt_i2c_msg *msg)
 {
     rt_size_t bytes = 0;
@@ -50,15 +51,19 @@ static rt_size_t i2c1_recv_bytes(struct rt_i2c_msg *msg)
 	
 	if (len < 2) 
 	{
-//		if ((msg->flags & RT_I2C_NO_READ_ACK))
-//		{
-//			I2C_AcknowledgeConfig(I2Cx,DISABLE);
-//			(void)I2Cx->SR2;
-//		}
+		I2C_AcknowledgeConfig(I2Cx,
+		msg->flags & RT_I2C_NO_READ_ACK?DISABLE:ENABLE);
+		(void)I2Cx->SR2;
 	   
+		I2C_GenerateSTOP(I2Cx, ENABLE);
+		
 		while (I2C_GetFlagStatus(I2Cx, I2C_FLAG_RXNE) == RESET);
 		msg->buf[bytes++] = I2C_ReceiveData(I2Cx);
 		
+		while (I2Cx->CR1 & I2C_CR1_STOP);
+		
+		I2C_AcknowledgeConfig(I2Cx, ENABLE);
+		return 1;
 //		if ((msg->flags & RT_I2C_NO_READ_ACK))
 //			I2C_AcknowledgeConfig(I2Cx,ENABLE);
 	} 
@@ -84,10 +89,10 @@ static rt_size_t i2c1_recv_bytes(struct rt_i2c_msg *msg)
 		DMA_ITConfig(DMAx_RX_CHANNEL, DMA_IT_TC|DMA_IT_TE, ENABLE);
 		
 		DMA_Cmd(DMAx_RX_CHANNEL, ENABLE);
+		//Check finshed
+		if(rt_sem_take(&DMA_RX_Sem,20)!=RT_EOK)
+			return 0;
 	}
-	//Check finshed
-	if(rt_sem_take(&DMA_RX_Sem,20)!=RT_EOK)
-		return 0;
     return len;
 }
 
@@ -121,18 +126,19 @@ static rt_size_t stm32_i2c_send_bytes(struct rt_i2c_msg *msg)
 rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
 						 struct rt_i2c_msg msgs[],
 						 rt_uint32_t num)
-{
+{int de=0;
 	struct rt_i2c_msg *msg;
     rt_int32_t i, ret;
 	rt_tick_t tick=rt_tick_get();
 	
-	I2C_GenerateSTART(I2Cx, ENABLE);
+	GPIO_SetBits(GPIOB,GPIO_Pin_8|GPIO_Pin_9);
+ 	I2C_GenerateSTART(I2Cx, ENABLE);
     /* Test on EV5 and clear it */
     while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
-		rt_kprintf("%d\n", GPIOB->IDR&GPIO_Pin_7);//CHECKTIME(tick);
+		CHECKTIME(tick);
 
     for (i = 0; i < num; i++)
-    {
+    {de=0;
         msg = &msgs[i];
         if (!(msg->flags & RT_I2C_NO_START))
         {
@@ -141,7 +147,7 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
                 I2C_GenerateSTART(I2Cx, ENABLE);
 				while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT))
 					CHECKTIME(tick);
-            }
+            }de=1;
             if (msg->flags & RT_I2C_RD)
 			{
 				I2C_Send7bitAddress(I2Cx, msg->addr, I2C_Direction_Receiver);
@@ -158,10 +164,12 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
         }
         if (msg->flags & RT_I2C_RD)
         {
+			nostart=i+1>=num && ret>1 && !(msg[i+1].flags & RT_I2C_NO_START);
             ret = i2c1_recv_bytes(msg);
             if (ret >= 1)
                 i2c_dbg("read %d byte%s\n",
                         ret, ret == 1 ? "" : "s");
+			
             if (ret < msg->len)
             {
                 if (ret >= 0)
@@ -171,6 +179,7 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
         }
         else
         {
+			nostart=i+1<num && msg[i+1].flags & RT_I2C_NO_START;
             ret = stm32_i2c_send_bytes(msg);
             if (ret >= 1)
                 i2c_dbg("write %d byte%s\n",
@@ -184,10 +193,14 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
         }
     }
     ret = i;
-
+	
+    return ret;
+	de=-1;
 out:
-    i2c_dbg("send stop condition\n");
-    I2C_GenerateSTOP(I2Cx, ENABLE);
+	if(de==0)GPIO_ResetBits(GPIOB,GPIO_Pin_8);else if(de==1)GPIO_ResetBits(GPIOB,GPIO_Pin_9);
+    i2c_dbg("error on stage %d\n",de);
+	while(1);
+//    I2C_GenerateSTOP(I2Cx, ENABLE);
 	
     return ret;
 }
@@ -246,17 +259,34 @@ rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
     RT_ASSERT(bus != RT_NULL);
     RT_ASSERT(buffer != RT_NULL);
 	
-	msgs[0].addr=daddr;
-	msgs[0].buf=&raddr;
-	msgs[0].len=1;
-	msgs[0].flags=RT_I2C_WR;
+	if(count>1)
+	{
+		msgs[0].addr=daddr;
+		msgs[0].buf=&raddr;
+		msgs[0].len=1;
+		msgs[0].flags=RT_I2C_WR;
+		
+		msgs[1].addr=daddr;
+		msgs[1].buf=buffer;
+		msgs[1].len=count;
+		msgs[1].flags=RT_I2C_WR|RT_I2C_NO_START;
+		
+		err=rt_i2c_transfer(bus,msgs,2);
+	}
+	else
+	{
+		rt_uint8_t data[2];
+		data[0]=raddr;
+		data[1]=*((rt_uint8_t *)buffer);
+		
+		msgs[0].addr=daddr;
+		msgs[0].buf=data;
+		msgs[0].len=2;
+		msgs[0].flags=RT_I2C_WR;
+		
+		err=rt_i2c_transfer(bus,msgs,1);
+	}
 	
-	msgs[1].addr=daddr;
-	msgs[1].buf=buffer;
-	msgs[1].len=count;
-	msgs[1].flags=RT_I2C_WR|RT_I2C_NO_START;
-	
-	err=rt_i2c_transfer(bus,msgs,2);
 	
 	if(err<0)
 		return -err;
@@ -286,14 +316,22 @@ static void GPIO_Configuration(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(I2Cx_SDA_GPIO_PORT, &GPIO_InitStructure);
 	
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_SetBits(GPIOB,I2Cx_SCL_PIN|I2Cx_SDA_PIN|GPIO_Pin_8|GPIO_Pin_9);
+	
+	I2C_Cmd(I2Cx, DISABLE);
+	I2C_DeInit(I2Cx);
 	I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;
 	I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2;
 	I2C_InitStruct.I2C_OwnAddress1 = 0x00;
 	I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;
 	I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_InitStruct.I2C_ClockSpeed = I2Cx_SPEED;
-	I2C_Cmd(I2Cx, ENABLE);
 	I2C_Init(I2Cx, &I2C_InitStruct);
+	I2C_Cmd(I2Cx, ENABLE);
 	
 	DMA_ClearFlag(DMAx_TX_FLAG_GLIF | DMAx_TX_FLAG_TEIF |
 		      DMAx_TX_FLAG_HTIF | DMAx_TX_FLAG_TCIF);
@@ -370,7 +408,7 @@ void rt_hw_i2c1_init(void)
 	
 	rt_i2c_bus_device_register(bus,"i2c1");
 }
-//TODO:Add DMA IRQ Handler
+//DMA IRQ Handler
 void DMA1_Channel6_IRQHandler(void)
 {
 	if (DMA_GetITStatus(DMAx_TX_FLAG_TCIF) != RESET) {
@@ -379,6 +417,9 @@ void DMA1_Channel6_IRQHandler(void)
 		DMA_Cmd(DMAx_TX_CHANNEL, DISABLE);
 		
 		DMA_ClearITPendingBit(DMAx_TX_FLAG_TCIF);
+		
+		if(!nostart)
+			I2C_GenerateSTOP(I2Cx, ENABLE);
 		
 		rt_sem_release(&DMA_TX_Sem);
 		
@@ -394,6 +435,9 @@ void DMA1_Channel7_IRQHandler(void)
 		DMA_Cmd(DMAx_RX_CHANNEL, DISABLE);
 		DMA_ClearITPendingBit(DMAx_RX_FLAG_TCIF);
 		rt_sem_release(&DMA_RX_Sem);
+		
+//		if(nostart)
+			I2C_GenerateSTOP(I2Cx, ENABLE);
 		
 		rt_interrupt_leave();
 	}

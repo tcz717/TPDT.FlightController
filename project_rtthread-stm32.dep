@@ -1,5 +1,5 @@
 Dependencies for Project 'project', Target 'rtthread-stm32': (DO NOT MODIFY !)
-F (applications\application.c)(0x541E6F37)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\application.o --omf_browse .\build\application.crf --depend .\build\application.d)
+F (applications\application.c)(0x542291EC)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\application.o --omf_browse .\build\application.crf --depend .\build\application.d)
 I (drivers\board.h)(0x53E89A36)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include\core_cm3.h)(0x53DB118C)
@@ -32,7 +32,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x53DB118C)
 I (Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x53DB118C)
 I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -51,6 +51,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/spi.h)(0x53
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (drivers\bmp085.h)(0x53EBA6D3)
 I (drivers\MPU6050.h)(0x540C8721)
 I (drivers\ahrs.h)(0x54145FCD)
@@ -59,7 +60,7 @@ I (drivers\led.h)(0x53DB118C)
 F (applications\startup.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\startup.o --omf_browse .\build\startup.crf --depend .\build\startup.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -99,7 +100,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 F (drivers\board.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\board.o --omf_browse .\build\board.crf --depend .\build\board.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -177,7 +178,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x53DB118C)
 I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (drivers\board.h)(0x53E89A36)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -185,7 +186,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (drivers\led.c)(0x53E89913)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\led.o --omf_browse .\build\led.crf --depend .\build\led.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -259,7 +260,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (drivers\usart.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -272,7 +273,8 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
-F (drivers\i2c1.c)(0x541E6F37)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\i2c1.o --omf_browse .\build\i2c1.crf --depend .\build\i2c1.d)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
+F (drivers\i2c1.c)(0x54229116)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\i2c1.o --omf_browse .\build\i2c1.crf --depend .\build\i2c1.d)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include\core_cm3.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x52FDD27E)
@@ -306,7 +308,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (drivers\i2c1.h)(0x540C8209)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -318,6 +320,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (drivers\board.h)(0x53E89A36)
 F (drivers\bmp085.c)(0x53ECA7E1)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\bmp085.o --omf_browse .\build\bmp085.crf --depend .\build\bmp085.d)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
@@ -353,7 +356,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (drivers\bmp085.h)(0x53EBA6D3)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -365,6 +368,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (drivers\board.h)(0x53E89A36)
 I (drivers\i2c1.h)(0x540C8209)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x52FDD27E)
@@ -377,7 +381,7 @@ F (drivers\spi2.c)(0x540C9E15)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I
 I (drivers\spi2.h)(0x540D9AFB)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -389,6 +393,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include\core_cm3.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x52FDD27E)
@@ -420,7 +425,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x53DB118C)
 I (Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x53DB118C)
 I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (drivers\board.h)(0x53E89A36)
-F (drivers\mpu6050.c)(0x54170758)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\mpu6050.o --omf_browse .\build\mpu6050.crf --depend .\build\mpu6050.d)
+F (drivers\mpu6050.c)(0x542287AC)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\mpu6050.o --omf_browse .\build\mpu6050.crf --depend .\build\mpu6050.d)
 I (drivers\MPU6050.h)(0x540C8721)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include\core_cm3.h)(0x53DB118C)
@@ -454,7 +459,7 @@ I (Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x53DB118C)
 I (Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -466,6 +471,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (drivers\i2c1.h)(0x540C8209)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\init\components.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
@@ -476,7 +482,7 @@ F (drivers\ahrs.c)(0x54145FCD)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I
 I (drivers\ahrs.h)(0x54145FCD)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -488,6 +494,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include\core_cm3.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x52FDD27E)
@@ -553,7 +560,7 @@ I (drivers\board.h)(0x53E89A36)
 I (drivers\bluetooth.h)(0x54172BE8)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -565,6 +572,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.c)(0x541AF304)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\system_stm32f10x.o --omf_browse .\build\system_stm32f10x.crf --depend .\build\system_stm32f10x.d)
 I (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include\core_cm3.h)(0x53DB118C)
@@ -1313,7 +1321,7 @@ F (Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\arm\startup_stm32f10x_
 F (..\..\rtt\rt-thread-2.0.0_beta\src\clock.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\clock.o --omf_browse .\build\clock.crf --depend .\build\clock.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1321,7 +1329,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\device.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\device.o --omf_browse .\build\device.crf --depend .\build\device.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1330,7 +1338,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\idle.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\idle.o --omf_browse .\build\idle.crf --depend .\build\idle.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1338,7 +1346,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\ipc.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\ipc.o --omf_browse .\build\ipc.crf --depend .\build\ipc.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1348,7 +1356,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\irq.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\irq.o --omf_browse .\build\irq.crf --depend .\build\irq.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1356,7 +1364,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\kservice.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\kservice.o --omf_browse .\build\kservice.crf --depend .\build\kservice.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1366,7 +1374,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\mem.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\mem.o --omf_browse .\build\mem.crf --depend .\build\mem.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1379,7 +1387,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x52FDD27E)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\mempool.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\mempool.o --omf_browse .\build\mempool.crf --depend .\build\mempool.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1387,7 +1395,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\object.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\object.o --omf_browse .\build\object.crf --depend .\build\object.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1396,7 +1404,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\scheduler.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\scheduler.o --omf_browse .\build\scheduler.crf --depend .\build\scheduler.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1405,7 +1413,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\thread.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\thread.o --omf_browse .\build\thread.crf --depend .\build\thread.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1414,7 +1422,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\src\timer.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\timer.o --omf_browse .\build\timer.crf --depend .\build\timer.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1423,7 +1431,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3\cpuport.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\cpuport.o --omf_browse .\build\cpuport.crf --depend .\build\cpuport.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1432,7 +1440,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3\context_rvds.S)(0x53DB118C)(--cpu Cortex-M3 -g --apcs=interwork -I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x--list .\build\context_rvds.lst --xref -o .\build\context_rvds.o --depend .\build\context_rvds.d)
 F (..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common\backtrace.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\backtrace.o --omf_browse .\build\backtrace.crf --depend .\build\backtrace.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1441,7 +1449,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common\div0.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\div0.o --omf_browse .\build\div0.crf --depend .\build\div0.d)
 F (..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common\showmem.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\showmem.o --omf_browse .\build\showmem.crf --depend .\build\showmem.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1450,7 +1458,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\i2c\i2c_core.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\i2c_core.o --omf_browse .\build\i2c_core.crf --depend .\build\i2c_core.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\rtdevice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1461,10 +1469,11 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\i2c\i2c_dev.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\i2c_dev.o --omf_browse .\build\i2c_dev.crf --depend .\build\i2c_dev.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\rtdevice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1475,10 +1484,26 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
+F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\i2c\i2c-bit-ops.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\i2c-bit-ops.o --omf_browse .\build\i2c-bit-ops.crf --depend .\build\i2c-bit-ops.d)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\rtdevice.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
+I (.\rtconfig.h)(0x5422903D)
+I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
+I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
+I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/spi.h)(0x53DB118C)
+I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\serial\serial.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\serial.o --omf_browse .\build\serial.crf --depend .\build\serial.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1490,11 +1515,12 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\spi\spi_core.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\spi_core.o --omf_browse .\build\spi_core.crf --depend .\build\spi_core.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/spi.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1502,7 +1528,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\include\rtservice.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtm.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\spi\spi_dev.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\spi_dev.o --omf_browse .\build\spi_dev.crf --depend .\build\spi_dev.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1514,7 +1540,7 @@ F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\spi\spi_flash_w25qxx.c)(0x5
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\spi\spi_flash_w25qxx.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1525,7 +1551,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\completion.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\completion.o --omf_browse .\build\completion.crf --depend .\build\completion.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1537,9 +1563,10 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\dataqueue.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\dataqueue.o --omf_browse .\build\dataqueue.crf --depend .\build\dataqueue.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1551,11 +1578,12 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\pipe.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\pipe.o --omf_browse .\build\pipe.crf --depend .\build\pipe.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1567,9 +1595,10 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\portal.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\portal.o --omf_browse .\build\portal.crf --depend .\build\portal.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1581,9 +1610,10 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\ringbuffer.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\ringbuffer.o --omf_browse .\build\ringbuffer.crf --depend .\build\ringbuffer.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1595,10 +1625,11 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x52FDD27E)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\src\workqueue.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\workqueue.o --omf_browse .\build\workqueue.crf --depend .\build\workqueue.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1610,10 +1641,11 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/serial.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c_dev.h)(0x53DB118C)
+I (..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include\drivers/i2c-bit-ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\shell.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\shell.o --omf_browse .\build\shell.crf --depend .\build\shell.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rthw.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1627,7 +1659,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\shell.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\symbol.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\symbol.o --omf_browse .\build\symbol.crf --depend .\build\symbol.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1638,7 +1670,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x52FDD27E)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x52FDD27E)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\cmd.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\cmd.o --omf_browse .\build\cmd.crf --depend .\build\cmd.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1651,7 +1683,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x52FDD27E)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_compiler.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_compiler.o --omf_browse .\build\finsh_compiler.crf --depend .\build\finsh_compiler.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1669,7 +1701,7 @@ F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_error.c)(0x53DB118C)(-c
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_error.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1681,7 +1713,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x52FDD27E)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_heap.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_heap.o --omf_browse .\build\finsh_heap.crf --depend .\build\finsh_heap.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1694,7 +1726,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_var.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_init.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_init.o --omf_browse .\build\finsh_init.crf --depend .\build\finsh_init.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1712,7 +1744,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_heap.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_node.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_node.o --omf_browse .\build\finsh_node.crf --depend .\build\finsh_node.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1730,7 +1762,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_ops.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_vm.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1743,7 +1775,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_var.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_parser.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_parser.o --omf_browse .\build\finsh_parser.crf --depend .\build\finsh_parser.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1760,7 +1792,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_var.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_var.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_var.o --omf_browse .\build\finsh_var.crf --depend .\build\finsh_var.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1773,7 +1805,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_var.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_vm.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_vm.o --omf_browse .\build\finsh_vm.crf --depend .\build\finsh_vm.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1788,7 +1820,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_ops.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_token.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\finsh_token.o --omf_browse .\build\finsh_token.crf --depend .\build\finsh_token.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)
@@ -1802,7 +1834,7 @@ I (..\..\rtt\rt-thread-2.0.0_beta\components\finsh\finsh_error.h)(0x53DB118C)
 F (..\..\rtt\rt-thread-2.0.0_beta\components\init\components.c)(0x53DB118C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I. -I..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include -I..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include -I..\..\rtt\rt-thread-2.0.0_beta\components\finsh -I..\..\rtt\rt-thread-2.0.0_beta\components\init -I..\..\rtt\rt-thread-2.0.0_beta\include -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common -I..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\STM32F10x_StdPeriph_Driver\inc -Iapplications -Idrivers-I D:\Keil_v5\ARM\RV31\INC-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I D:\Keil_v5\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -o .\build\components.o --omf_browse .\build\components.crf --depend .\build\components.d)
 I (..\..\rtt\rt-thread-2.0.0_beta\components\init\components.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtthread.h)(0x53DB118C)
-I (.\rtconfig.h)(0x54148017)
+I (.\rtconfig.h)(0x5422903D)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdebug.h)(0x53DB118C)
 I (..\..\rtt\rt-thread-2.0.0_beta\include\rtdef.h)(0x53DB118C)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x52FDD27E)

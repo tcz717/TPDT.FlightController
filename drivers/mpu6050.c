@@ -39,6 +39,8 @@ rt_err_t mpu6050_init(const char * i2c_bus_device_name)
 	RCC_Configuration();
 	GPIO_Configuration();
 	
+    MPU6050_SetClockSource(MPU6050_CLOCK_KEEP_RESET);
+	rt_thread_delay(200);
     MPU6050_SetClockSource(MPU6050_CLOCK_PLL_XGYRO);
     MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_500);
     MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);
