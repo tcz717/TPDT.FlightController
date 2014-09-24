@@ -72,7 +72,7 @@
 /* the buffer size of console*/
 #define RT_CONSOLEBUF_SIZE	        128
 // <string name="RT_CONSOLE_DEVICE_NAME" description="The device name for console" default="uart1" />
-#define RT_CONSOLE_DEVICE_NAME	    "uart3"
+#define RT_CONSOLE_DEVICE_NAME	    "bt1"
 
 /* SECTION: finsh, a C-Express shell */
 #define RT_USING_FINSH
@@ -82,7 +82,7 @@
 
 /* 自定义功能 */
 #define RT_USING_I2C
-#define RT_USING_I2C_BITOPS
+//#define RT_USING_I2C_BITOPS
 #define RT_USING_SPI
 #define RT_USING_W25QXX
 #define RT_I2C_DEBUG

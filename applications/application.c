@@ -7,10 +7,10 @@
 #include "bmp085.h"
 #include "MPU6050.h"
 #include "ahrs.h"  
-#include "bluetooth.h"
 #include "LED.h"
 #include "Motor.h"
 #include "hardtimer.h"
+#include "PID.h"
 
 #ifdef RT_USING_DFS
 /* dfs filesystem:ELM filesystem init */
@@ -19,7 +19,7 @@
 #include <dfs_fs.h>
 #endif
 
-#define FC_DEBUG
+//#define FC_DEBUG
 #ifdef FC_DEBUG
 #define debug(fmt, ...)   rt_kprintf(fmt, ##__VA_ARGS__)
 #else
@@ -43,13 +43,22 @@ static struct rt_semaphore mpu6050_sem;
 
 void control_thread_entry(void* parameter)
 {
-	
+	u16 throttle=0;
+	u8 balence=0;
+	PID pitch_pid,roll_pid;
+	while(1)
+	{
+		
+		
+		rt_thread_delay(5);
+	}
 }
 
 
 void ahrs_thread_entry(void* parameter)
 {
 	rt_uint32_t e;
+	rt_bool_t b;
 	while(1)
 	{
 		rt_sem_release(&mpu6050_sem);
@@ -58,6 +67,7 @@ void ahrs_thread_entry(void* parameter)
 						RT_EVENT_FLAG_AND|RT_EVENT_FLAG_CLEAR,
 						10,&e)==RT_EOK)
 		{
+			LED_set4(b=!b);
 			debug("AHRS Received OK\n");
 			ahrs_update();
 			debug("%d,%d,%d		%d\n",
@@ -82,7 +92,7 @@ void mpu6050_thread_entry(void* parameter)
 		if( MPU6050_TestConnection())
 		{
 			MPU6050_GetRawAccelGyro(AccelGyro);
-			rt_kprintf("%d,%d,%d,%d,%d,%d\n",AccelGyro[0],AccelGyro[1],
+			debug("%d,%d,%d,%d,%d,%d\n",AccelGyro[0],AccelGyro[1],
 			AccelGyro[2],AccelGyro[3],
 			AccelGyro[4],AccelGyro[5]);
 			
@@ -98,10 +108,6 @@ void rt_init_thread_entry(void* parameter)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     rt_components_init();
-	
-//	rt_hw_bluetooth_init();
-//	rt_console_set_device("bt1");
-//    finsh_set_device("bt1");
 	
     finsh_set_device(RT_CONSOLE_DEVICE_NAME);
 	
@@ -129,8 +135,16 @@ void rt_init_thread_entry(void* parameter)
 					ahrs_thread_entry,
 					RT_NULL,
                     ahrs_stack,
-					256, 4, 20);
+					256, 5, 20);
     rt_thread_startup(&ahrs_thread);
+	
+	rt_thread_init(&control_thread,
+					"control",
+					control_thread_entry,
+					RT_NULL,
+                    control_stack,
+					512, 3, 10);
+    rt_thread_startup(&control_thread);
 	
 	LED_set1(1);
 }

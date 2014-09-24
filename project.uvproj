@@ -825,13 +825,6 @@
           </Files>
           <Files>
             <File>
-              <FileName>i2c-bit-ops.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\rtt\rt-thread-2.0.0_beta\components\drivers\i2c\i2c-bit-ops.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\rtt\rt-thread-2.0.0_beta\components\drivers\serial\serial.c</FilePath>

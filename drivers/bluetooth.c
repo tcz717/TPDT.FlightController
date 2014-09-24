@@ -3,6 +3,7 @@
 #include "bluetooth.h"
 
 #include <rtdevice.h>
+#include <components.h> 
 
 
 struct rt_serial_device bluetooth;
@@ -117,7 +118,7 @@ static const struct rt_uart_ops bluetooth_ops =
     bluetooth_dma_transmit
 };
 
-char * bluetooth_commend(const char * cmd)
+void bt_set(rt_uint32_t baund)
 {
 	char * result;
     struct rt_device *device;
@@ -126,10 +127,12 @@ char * bluetooth_commend(const char * cmd)
 	
 	GPIO_SetBits(GPIOA,GPIO_Pin_4);
 	
-	rt_device_write(device,0,cmd,1);
+	rt_kprintf("AT+UART=%d,0,0\n",baund);
 	
-	GPIO_SetBits(GPIOA,GPIO_Pin_4);
+	GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 }
+
+FINSH_FUNCTION_EXPORT(bt_set, set blutooth rate)
 
 void rt_hw_bluetooth_init(){
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
@@ -166,6 +169,13 @@ void rt_hw_bluetooth_init(){
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;  
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;  
 	NVIC_Init(&NVIC_InitStructure);
+	
+	
+    NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 	
     config.baud_rate = BAUD_RATE_9600;
 	

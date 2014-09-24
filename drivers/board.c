@@ -20,6 +20,7 @@
 #include "stm32f10x_fsmc.h"
 #include "board.h"
 #include "usart.h"
+#include "bluetooth.h"
 
 #ifdef  RT_USING_COMPONENTS_INIT
 #include <components.h>
@@ -186,6 +187,8 @@ void rt_hw_board_init(void)
 #endif
 
     rt_hw_usart_init();
+	rt_hw_bluetooth_init();
+	
     rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 
 #ifdef RT_USING_COMPONENTS_INIT
