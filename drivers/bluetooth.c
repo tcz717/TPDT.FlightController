@@ -135,7 +135,6 @@ void rt_hw_bluetooth_init(){
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
 
     GPIO_InitTypeDef GPIO_InitStructure;
-//	USART_InitTypeDef USART_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
@@ -161,18 +160,6 @@ void rt_hw_bluetooth_init(){
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;	
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;		
 	NVIC_Init(&NVIC_InitStructure);	
-  
-
-//	USART_InitStructure.USART_BaudRate = 115200;
-//	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-//	USART_InitStructure.USART_StopBits = USART_StopBits_1;
-//	USART_InitStructure.USART_Parity = USART_Parity_No;
-//	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-//	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	
-
-//    USART_Init(UART4, &USART_InitStructure);
-//    USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);
-//    USART_Cmd(UART4, ENABLE);       
 
 	NVIC_InitStructure.NVIC_IRQChannel = DMA2_Channel4_5_IRQn;  
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
@@ -180,7 +167,7 @@ void rt_hw_bluetooth_init(){
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;  
 	NVIC_Init(&NVIC_InitStructure);
 	
-    config.baud_rate = BAUD_RATE_115200;
+    config.baud_rate = BAUD_RATE_9600;
 	
 	bluetooth.config = config;
 	bluetooth.ops    = &bluetooth_ops;

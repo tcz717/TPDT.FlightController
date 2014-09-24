@@ -8,7 +8,7 @@ cwd     = os.path.join(str(Dir('#')), 'drivers')
 src = Split("""
 board.c
 stm32f10x_it.c
-led.c
+LED.c
 usart.c
 i2c1.c
 bmp085.c
@@ -16,6 +16,10 @@ spi2.c
 mpu6050.c
 ahrs.c
 bluetooth.c
+Motor.c
+PID.c
+PWM.c
+hardtimer.c
 """)
 
 # add Ethernet drivers.
