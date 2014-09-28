@@ -498,9 +498,16 @@
           </Files>
           <Files>
             <File>
-              <FileName>Timer.c</FileName>
+              <FileName>hardtimer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>drivers\Timer.c</FilePath>
+              <FilePath>drivers\hardtimer.c</FilePath>
+            </File>
+          </Files>
+          <Files>
+            <File>
+              <FileName>l3g4200d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>drivers\l3g4200d.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -821,13 +828,6 @@
               <FileName>i2c_dev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\rtt\rt-thread-2.0.0_beta\components\drivers\i2c\i2c_dev.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>i2c-bit-ops.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\rtt\rt-thread-2.0.0_beta\components\drivers\i2c\i2c-bit-ops.c</FilePath>
             </File>
           </Files>
           <Files>

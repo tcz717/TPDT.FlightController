@@ -20,6 +20,7 @@ Motor.c
 PID.c
 PWM.c
 hardtimer.c
+l3g4200d.c
 """)
 
 # add Ethernet drivers.

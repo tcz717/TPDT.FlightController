@@ -2,10 +2,11 @@
 #include "stm32f10x.h"                  // Device header
 #include "hardtimer.h"
 #include "math.h"
+#include <rtthread.h>
+#include <components.h>       
 struct ahrs_t ahrs;
 int16_t mpu_acc_x,mpu_acc_y,mpu_acc_z;
 int16_t mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw;
-
 
 /*=====================================================================================================*/
 /*=====================================================================================================*/
@@ -18,7 +19,7 @@ int16_t mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw;
 **: MoveAve_SMA(NewData, MoveAve_FIFO, SampleNum)
 **=====================================================================================================*/
 /*=====================================================================================================*/
-static s16 MoveAve_SMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
+s16 MoveAve_SMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
 {
 	u8 i = 0;
 	s16 AveData = 0;
@@ -65,13 +66,20 @@ static s16 MoveAve_WMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO,
 
 	return AveData;
 }
+static double dt ;
+static void get_fps()
+{
+	rt_kprintf("fps:\t\t%d",(int)(1.0/dt));
+}
+FINSH_FUNCTION_EXPORT(get_fps, get ahrs fps)
 
 void ahrs_update()
 {
 	double ax,ay;
 	const double a = 0.98;
-    double dt = Timer4_GetSec();
 	const double gyroscale = 1000.0;
+  //  double 
+	dt = Timer4_GetSec();
 	
 	ahrs.gryo_pitch		= mpu_gryo_pitch * gyroscale / 32767.0;
 	ahrs.gryo_roll		= mpu_gryo_roll * gyroscale / 32767.0;

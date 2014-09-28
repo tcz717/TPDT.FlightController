@@ -8,6 +8,7 @@
 
 void ahrs_put_mpu6050(s16 * data);
 void ahrs_update(void);
+s16 MoveAve_SMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum);
 extern struct ahrs_t
 {
 	double acc_x;
@@ -21,5 +22,7 @@ extern struct ahrs_t
 	double degree_yaw;
 	double time_span;
 }ahrs;
+extern int16_t mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw;
+extern double MPU6050_Diff[];
 
 #endif

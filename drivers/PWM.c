@@ -1,4 +1,5 @@
 #include "PWM.h"
+#include <rtthread.h>
 void PWMOUT1_Init()
 {  
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -137,6 +138,9 @@ void TIM1_CC_IRQHandler(void)
 	u32 current[4];
 	TIM_ICInitTypeDef TIM_ICInitStructure;
 	TIM_ICStructInit(&TIM_ICInitStructure);
+	
+	rt_interrupt_enter();
+	
 	if (TIM_GetITStatus(TIM1, TIM_IT_CC1) == SET) {
 		/* Clear TIM1 Capture compare interrupt pending bit */
 		TIM_ClearITPendingBit(TIM1, TIM_IT_CC1);
@@ -248,13 +252,18 @@ void TIM1_CC_IRQHandler(void)
 			rising[3] = 0;
 		}
 		TIM_ICInit(TIM1, &TIM_ICInitStructure);
-	}	
+	}
+
+	rt_interrupt_leave();
 }
 void TIM5_IRQHandler(void)
 {
 	u32 current[4];
 	TIM_ICInitTypeDef TIM_ICInitStructure;
 	TIM_ICStructInit(&TIM_ICInitStructure);
+	
+	rt_interrupt_enter();
+	
 	if (TIM_GetITStatus(TIM5, TIM_IT_CC1) == SET) {
 		/* Clear TIM5 Capture compare interrupt pending bit */
 		TIM_ClearITPendingBit(TIM5, TIM_IT_CC1);
@@ -367,4 +376,6 @@ void TIM5_IRQHandler(void)
 		}
 		TIM_ICInit(TIM5, &TIM_ICInitStructure);
 	}	
+	
+	rt_interrupt_leave();
 }

@@ -40,8 +40,13 @@
 
 #define CHECKTIME(TIME)		if(rt_tick_get()>(TIME)+1){ret=-RT_ETIMEOUT;goto out;}
 
+#define NO_RT_DEVICE
 static struct rt_i2c_bus_device i2c_bus1;
 //TX and RX DMA Semaphore
+#ifdef NO_RT_DEVICE
+static struct rt_semaphore I2C_RX_Sem;
+static struct rt_semaphore I2C_TX_Sem;
+#endif
 static struct rt_semaphore DMA_RX_Sem;
 static struct rt_semaphore DMA_TX_Sem;
 static rt_bool_t nostart;
@@ -207,7 +212,6 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
 out:
 	if(de==0)GPIO_ResetBits(GPIOB,GPIO_Pin_8);else if(de==1)GPIO_ResetBits(GPIOB,GPIO_Pin_9);
     i2c_dbg("error on stage %d\n",de);
-	while(1);
 //    I2C_GenerateSTOP(I2Cx, ENABLE);
 	
     return ret;
@@ -227,14 +231,97 @@ rt_err_t i2c1_i2c_bus_control(struct rt_i2c_bus_device *bus,
     return RT_EOK;
 }
 
+
 rt_err_t i2c_register_read(struct rt_i2c_bus_device *bus,
 						rt_uint16_t daddr,
 						rt_uint8_t raddr,
 						void *buffer,
 						rt_size_t count)
 {
+	rt_int32_t ret;
+	rt_tick_t tick=rt_tick_get();
+#ifdef 	NO_RT_DEVICE
+	rt_uint16_t NumByteToRead=count;
+	rt_uint8_t * pBuffer=(rt_uint8_t *)buffer;
+	rt_sem_take(&I2C_RX_Sem,RT_WAITING_FOREVER);
+	rt_enter_critical();
+	  /* While the bus is busy */
+	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY))
+		CHECKTIME(tick);
+
+	/* Send START condition */
+	I2C_GenerateSTART(I2C1, ENABLE);
+
+	/* Test on EV5 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
+	CHECKTIME(tick);
+
+	/* Send MPU6050 address for write */
+	I2C_Send7bitAddress(I2C1, daddr, I2C_Direction_Transmitter); 
+
+	/* Test on EV6 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+		CHECKTIME(tick);
+
+	/* Clear EV6 by setting again the PE bit */
+	I2C_Cmd(I2C1, ENABLE);
+
+	/* Send the MPU6050's internal address to write to */
+	I2C_SendData(I2C1, raddr);
+
+	/* Test on EV8 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+		CHECKTIME(tick);
+
+	/* Send STRAT condition a second time */
+	I2C_GenerateSTART(I2C1, ENABLE);
+
+	/* Test on EV5 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
+		CHECKTIME(tick);
+
+	/* Send MPU6050 address for read */
+	I2C_Send7bitAddress(I2C1, daddr, I2C_Direction_Receiver);
+
+	/* Test on EV6 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
+		CHECKTIME(tick);
+
+	/* While there is data to be read */
+	while(NumByteToRead)
+	{
+		if(NumByteToRead == 1)
+		{
+			/* Disable Acknowledgement */
+			I2C_AcknowledgeConfig(I2C1, DISABLE);
+
+			/* Send STOP Condition */
+			I2C_GenerateSTOP(I2C1, ENABLE);
+		}
+
+		/* Test on EV7 and clear it */
+		while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED))
+			CHECKTIME(tick);
+		{
+			/* Read a byte from the MPU6050 */
+			*pBuffer = I2C_ReceiveData(I2C1);
+
+			/* Point to the next location where the byte read will be saved */
+			pBuffer++;
+
+			/* Decrement the read bytes counter */
+			NumByteToRead--;
+			
+		}
+	}
+
+	/* Enable Acknowledgement to be ready for another reception */
+	I2C_AcknowledgeConfig(I2C1, ENABLE);
+	//  EXT_CRT_SECTION();
+	rt_exit_critical();
+	rt_sem_release(&I2C_RX_Sem);
+#else
 	struct rt_i2c_msg msgs[2];
-	rt_err_t err;
     RT_ASSERT(bus != RT_NULL);
     RT_ASSERT(buffer != RT_NULL);
 	
@@ -247,13 +334,16 @@ rt_err_t i2c_register_read(struct rt_i2c_bus_device *bus,
 	msgs[1].buf=buffer;
 	msgs[1].len=count;
 	msgs[1].flags=RT_I2C_RD|RT_I2C_NO_READ_ACK;
+	err=rt_i2c_transfer(bus,msgs,2);	
+#endif
 	
-	err=rt_i2c_transfer(bus,msgs,2);
-	
-	if(err<0)
-		return -err;
-	else
-		return RT_EOK;
+	return RT_EOK;
+	out:	
+#ifdef 	NO_RT_DEVICE
+	rt_exit_critical();
+	rt_sem_release(&I2C_RX_Sem);
+#endif
+	return ret;
 }
 
 rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
@@ -262,6 +352,46 @@ rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
 						void *buffer,
 						rt_size_t count)
 {
+	rt_int32_t ret;
+	rt_tick_t tick=rt_tick_get();
+#ifdef 	NO_RT_DEVICE
+	rt_uint16_t NumByteToRead=count;
+	rt_uint8_t * pBuffer=(rt_uint8_t *)buffer;
+	
+	rt_sem_take(&I2C_TX_Sem,RT_WAITING_FOREVER);
+	rt_enter_critical();
+	I2C_GenerateSTART(I2C1, ENABLE);
+
+	/* Test on EV5 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
+		CHECKTIME(tick);
+
+	/* Send MPU6050 address for write */
+	I2C_Send7bitAddress(I2C1, daddr, I2C_Direction_Transmitter);
+
+	/* Test on EV6 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+		CHECKTIME(tick);
+
+	/* Send the MPU6050's internal address to write to */
+	I2C_SendData(I2C1, raddr);
+
+	/* Test on EV8 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+		CHECKTIME(tick);
+
+	/* Send the byte to be written */
+	I2C_SendData(I2C1, *pBuffer);
+
+	/* Test on EV8 and clear it */
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+		CHECKTIME(tick);
+
+	/* Send STOP condition */
+	I2C_GenerateSTOP(I2C1, ENABLE);
+	rt_exit_critical();
+	rt_sem_release(&I2C_TX_Sem);
+#else
 	struct rt_i2c_msg msgs[2];
 	rt_err_t err;
     RT_ASSERT(bus != RT_NULL);
@@ -294,12 +424,16 @@ rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
 		
 		err=rt_i2c_transfer(bus,msgs,1);
 	}
+#endif
 	
+	return RT_EOK;
+	out:	
 	
-	if(err<0)
-		return -err;
-	else
-		return RT_EOK;
+#ifdef 	NO_RT_DEVICE
+	rt_exit_critical();
+	rt_sem_release(&I2C_TX_Sem);
+#endif
+	return ret;
 }
 
 static void RCC_Configuration(void)
@@ -414,6 +548,10 @@ void rt_hw_i2c1_init(void)
 	
 	rt_sem_init(&DMA_TX_Sem,"i2c_tx",0,RT_IPC_FLAG_FIFO);
 	rt_sem_init(&DMA_RX_Sem,"i2c_rx",0,RT_IPC_FLAG_FIFO);
+#ifdef NO_RT_DEVICE
+	rt_sem_init(&I2C_RX_Sem,"i2c_p_tx",1,RT_IPC_FLAG_FIFO);
+	rt_sem_init(&I2C_TX_Sem,"i2c_p_rx",1,RT_IPC_FLAG_FIFO);
+#endif
 	
 	rt_i2c_bus_device_register(bus,"i2c1");
 }
