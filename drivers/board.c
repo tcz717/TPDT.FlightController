@@ -21,6 +21,11 @@
 #include "board.h"
 #include "usart.h"
 #include "bluetooth.h"
+#include "i2c1.h"
+#include "spi2.h"
+#include "LED.h"
+#include "Motor.h"
+#include "hardtimer.h"
 
 #ifdef  RT_USING_COMPONENTS_INIT
 #include <components.h>
@@ -188,6 +193,10 @@ void rt_hw_board_init(void)
 
     rt_hw_usart_init();
 	rt_hw_bluetooth_init();
+	
+	Timer4_init();
+	LED_init();
+	Motor_Init();
 	
     rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 

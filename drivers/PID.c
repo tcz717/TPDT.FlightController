@@ -36,4 +36,13 @@ double RangeValue(double value,double min,double max)
 		return min;
 	return value;
 }
+
+void PID_Init(PID* pid,double p,double i,double d)
+{
+	pid->p=p;
+	pid->i=i;
+	pid->d=d;
+	
+	PID_SetTarget(pid,0);
+}
 	

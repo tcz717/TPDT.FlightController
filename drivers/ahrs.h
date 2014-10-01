@@ -22,6 +22,13 @@ extern struct ahrs_t
 	double degree_yaw;
 	double time_span;
 }ahrs;
+
+typedef struct {
+	float q0;
+	float q1;
+	float q2;
+	float q3;
+} Quaternion;
 extern int16_t mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw;
 extern double MPU6050_Diff[];
 

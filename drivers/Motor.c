@@ -6,6 +6,8 @@ void Motor_Init(void)
 	PWMOUT1_Init();
 	PWMIN1_Init();
 	PWMIN2_Init();
+	
+	Motor_Set(0,0,0,0);
 }
 void Motor_Set(u16 m1,u16 m2,u16 m3,u16 m4)
 {

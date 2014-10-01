@@ -44,8 +44,7 @@
 static struct rt_i2c_bus_device i2c_bus1;
 //TX and RX DMA Semaphore
 #ifdef NO_RT_DEVICE
-static struct rt_semaphore I2C_RX_Sem;
-static struct rt_semaphore I2C_TX_Sem;
+static struct rt_mutex I2C1_mutex;
 #endif
 static struct rt_semaphore DMA_RX_Sem;
 static struct rt_semaphore DMA_TX_Sem;
@@ -208,8 +207,8 @@ rt_size_t i2c1_master_xfer(struct rt_i2c_bus_device *bus,
     ret = i;
 	
     return ret;
-	de=-1;
 out:
+	de=-1;
 	if(de==0)GPIO_ResetBits(GPIOB,GPIO_Pin_8);else if(de==1)GPIO_ResetBits(GPIOB,GPIO_Pin_9);
     i2c_dbg("error on stage %d\n",de);
 //    I2C_GenerateSTOP(I2Cx, ENABLE);
@@ -243,7 +242,7 @@ rt_err_t i2c_register_read(struct rt_i2c_bus_device *bus,
 #ifdef 	NO_RT_DEVICE
 	rt_uint16_t NumByteToRead=count;
 	rt_uint8_t * pBuffer=(rt_uint8_t *)buffer;
-	rt_sem_take(&I2C_RX_Sem,RT_WAITING_FOREVER);
+	rt_mutex_take(&I2C1_mutex,RT_WAITING_FOREVER);
 	rt_enter_critical();
 	  /* While the bus is busy */
 	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY))
@@ -319,7 +318,7 @@ rt_err_t i2c_register_read(struct rt_i2c_bus_device *bus,
 	I2C_AcknowledgeConfig(I2C1, ENABLE);
 	//  EXT_CRT_SECTION();
 	rt_exit_critical();
-	rt_sem_release(&I2C_RX_Sem);
+	rt_mutex_release(&I2C1_mutex);
 #else
 	struct rt_i2c_msg msgs[2];
     RT_ASSERT(bus != RT_NULL);
@@ -340,8 +339,9 @@ rt_err_t i2c_register_read(struct rt_i2c_bus_device *bus,
 	return RT_EOK;
 	out:	
 #ifdef 	NO_RT_DEVICE
+//	I2C_GenerateSTOP(I2C1, ENABLE);
 	rt_exit_critical();
-	rt_sem_release(&I2C_RX_Sem);
+	rt_mutex_release(&I2C1_mutex);
 #endif
 	return ret;
 }
@@ -355,10 +355,9 @@ rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
 	rt_int32_t ret;
 	rt_tick_t tick=rt_tick_get();
 #ifdef 	NO_RT_DEVICE
-	rt_uint16_t NumByteToRead=count;
 	rt_uint8_t * pBuffer=(rt_uint8_t *)buffer;
 	
-	rt_sem_take(&I2C_TX_Sem,RT_WAITING_FOREVER);
+	rt_mutex_take(&I2C1_mutex,RT_WAITING_FOREVER);
 	rt_enter_critical();
 	I2C_GenerateSTART(I2C1, ENABLE);
 
@@ -390,7 +389,7 @@ rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
 	/* Send STOP condition */
 	I2C_GenerateSTOP(I2C1, ENABLE);
 	rt_exit_critical();
-	rt_sem_release(&I2C_TX_Sem);
+	rt_mutex_release(&I2C1_mutex);
 #else
 	struct rt_i2c_msg msgs[2];
 	rt_err_t err;
@@ -430,8 +429,9 @@ rt_err_t i2c_register_write(struct rt_i2c_bus_device *bus,
 	out:	
 	
 #ifdef 	NO_RT_DEVICE
+//	I2C_GenerateSTOP(I2C1, ENABLE);
 	rt_exit_critical();
-	rt_sem_release(&I2C_TX_Sem);
+	rt_mutex_release(&I2C1_mutex);
 #endif
 	return ret;
 }
@@ -549,8 +549,7 @@ void rt_hw_i2c1_init(void)
 	rt_sem_init(&DMA_TX_Sem,"i2c_tx",0,RT_IPC_FLAG_FIFO);
 	rt_sem_init(&DMA_RX_Sem,"i2c_rx",0,RT_IPC_FLAG_FIFO);
 #ifdef NO_RT_DEVICE
-	rt_sem_init(&I2C_RX_Sem,"i2c_p_tx",1,RT_IPC_FLAG_FIFO);
-	rt_sem_init(&I2C_TX_Sem,"i2c_p_rx",1,RT_IPC_FLAG_FIFO);
+	rt_mutex_init(&I2C1_mutex,"i2c1_m",RT_IPC_FLAG_FIFO);
 #endif
 	
 	rt_i2c_bus_device_register(bus,"i2c1");

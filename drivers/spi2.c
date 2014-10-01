@@ -10,15 +10,15 @@
 
 struct rt_spi_bus spi2_bus;
 
-rt_inline void spi2_select_cs(u16 cs,u8 state)
-{
-	switch(cs)
-	{
-		case SPI_FLASH:
-			PAout(12)=!state;
-			break;
-	}
-}
+//rt_inline void spi2_select_cs(u16 cs,u8 state)
+//{
+//	switch(cs)
+//	{
+//		case SPI_FLASH:
+//			PAout(12)=!state;
+//			break;
+//	}
+//}
 
 void flash_select(u8 state)
 {
@@ -41,7 +41,10 @@ rt_err_t spi2_configure(struct rt_spi_device *device, struct rt_spi_configuratio
 }
 rt_uint32_t spi2_xfer(struct rt_spi_device *device, struct rt_spi_message *message)
 {
-	u8 i;
+	u32 i;
+	const rt_uint8_t * send_ptr = message->send_buf;
+	rt_uint8_t * recv_ptr = message->recv_buf;
+	
 	if(message->cs_take)
 	{
 		((struct spi_cs *)(device->parent.user_data))->spi_select(1);
@@ -49,17 +52,26 @@ rt_uint32_t spi2_xfer(struct rt_spi_device *device, struct rt_spi_message *messa
 	
 	for(i=0;i<message->length;i++)
 	{
-		if(message->send_buf!=RT_NULL)
+		rt_uint8_t data = 0xFF;
+
+		if(send_ptr != RT_NULL)
 		{
-			while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
-			
-			SPI_I2S_SendData(SPI2, ((u16 * )(message->send_buf))[i]); 
+			data = *send_ptr++;
 		}
-		if(message->recv_buf!=RT_NULL)
+
+		//Wait until the transmit buffer is empty
+		while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+		// Send the byte
+		SPI_I2S_SendData(SPI2, data);
+
+		//Wait until a data is received
+		while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
+		// Get the received data
+		data = SPI_I2S_ReceiveData(SPI2);
+
+		if(recv_ptr != RT_NULL)
 		{
-			while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
-			
-			((u8 *)(message->recv_buf))[i]= SPI_I2S_ReceiveData(SPI2);
+			*recv_ptr++ = data;
 		}
 	}
 	
@@ -107,9 +119,7 @@ void rt_hw_spi2_init(void)
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStruct);
 	
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_14;
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(GPIOB, &GPIO_InitStruct);
+	GPIO_SetBits(GPIOB,GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
 
 	SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;   // ?????
 	SPI_InitStruct.SPI_Mode = SPI_Mode_Master;                        // ???
@@ -117,7 +127,7 @@ void rt_hw_spi2_init(void)
 	SPI_InitStruct.SPI_CPOL = SPI_CPOL_High;                           // ????,?????
 	SPI_InitStruct.SPI_CPHA = SPI_CPHA_2Edge;    
 	SPI_InitStruct.SPI_NSS = SPI_NSS_Soft;                            // NSS???????
-	SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;   // 8??,9MHz
+	SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;   // 8??,9MHz
 	SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;                   // ????
 	SPI_InitStruct.SPI_CRCPolynomial = 7;
 	SPI_Init(SPI2, &SPI_InitStruct);

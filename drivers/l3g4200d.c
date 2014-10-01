@@ -65,53 +65,54 @@ void get_l3g4200d()
 }
 FINSH_FUNCTION_EXPORT(get_l3g4200d, get l3g4200d data)
 
-static u16 Multiple_read(u8 ST_Address)
-{
-	u8 tmp[2];
-	if(i2c_register_read(i2c_device,L3G4200_Addr,ST_Address,tmp,2)!=RT_EOK)
-		return 0;
-	return tmp[0]<<8 | tmp[1];
-}
+//static u16 Multiple_read(u8 ST_Address)
+//{
+//	u8 tmp[2];
+//	if(i2c_register_read(i2c_device,L3G4200_Addr,ST_Address,tmp,2)!=RT_EOK)
+//		return 0;
+//	return tmp[0]<<8 | tmp[1];
+//}
 void Single_Write(u8 ST_Address,u8 data)
 {
 	i2c_register_write(i2c_device,L3G4200_Addr,ST_Address,&data,1);
 }
-static void RCC_Configuration(void)
-{
-	RCC_APB2PeriphClockCmd(L3G4200D_INT2_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE);
-}
-static void GPIO_Configuration(void)
-{
-    GPIO_InitTypeDef GPIO_InitStructure;
-	EXTI_InitTypeDef EXTI_InitStructure;
+//static void RCC_Configuration(void)
+//{
+//	RCC_APB2PeriphClockCmd(L3G4200D_INT2_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE);
+//}
+//static void GPIO_Configuration(void)
+//{
+//    GPIO_InitTypeDef GPIO_InitStructure;
+//	EXTI_InitTypeDef EXTI_InitStructure;
 
-	GPIO_InitStructure.GPIO_Pin = L3G4200D_INT2_PIN;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(L3G4200D_INT2_GPIO_PORT, &GPIO_InitStructure);
-	
-	GPIO_EXTILineConfig(L3G4200D_INT2_GPIO_PortSource,L3G4200D_INT2_GPIO_PinSource);
-	EXTI_InitStructure.EXTI_Line=EXTI_Line1;
-	EXTI_InitStructure.EXTI_LineCmd=ENABLE;
-	EXTI_InitStructure.EXTI_Mode=EXTI_Mode_Interrupt;
-	EXTI_InitStructure.EXTI_Trigger=EXTI_Trigger_Rising;
-	
-	EXTI_Init(&EXTI_InitStructure);
-}
-static void NVIC_Configuration()
-{
-    NVIC_InitTypeDef NVIC_InitStructure;
-	NVIC_InitStructure.NVIC_IRQChannel = L3G4200D_INT2_EXIT_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-}
+//	GPIO_InitStructure.GPIO_Pin = L3G4200D_INT2_PIN;
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	GPIO_Init(L3G4200D_INT2_GPIO_PORT, &GPIO_InitStructure);
+//	
+//	GPIO_EXTILineConfig(L3G4200D_INT2_GPIO_PortSource,L3G4200D_INT2_GPIO_PinSource);
+//	EXTI_InitStructure.EXTI_Line=EXTI_Line1;
+//	EXTI_InitStructure.EXTI_LineCmd=ENABLE;
+//	EXTI_InitStructure.EXTI_Mode=EXTI_Mode_Interrupt;
+//	EXTI_InitStructure.EXTI_Trigger=EXTI_Trigger_Rising;
+//	
+//	EXTI_Init(&EXTI_InitStructure);
+//}
+//static void NVIC_Configuration()
+//{
+//    NVIC_InitTypeDef NVIC_InitStructure;
+//	NVIC_InitStructure.NVIC_IRQChannel = L3G4200D_INT2_EXIT_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_Init(&NVIC_InitStructure);
+//}
 
 uint8_t l3g4200d_GetDeviceID()
 {
     uint8_t tmp;
-	i2c_register_read(i2c_device,L3G4200_Addr,WHO_AM_I,&tmp,1);
+	if(i2c_register_read(i2c_device,L3G4200_Addr,WHO_AM_I,&tmp,1)==RT_EOK)
+		rt_kprintf("%d\n",tmp);
     return tmp; 
 }
 rt_bool_t l3g4200d_TestConnection() 

@@ -118,21 +118,21 @@ static const struct rt_uart_ops bluetooth_ops =
     bluetooth_dma_transmit
 };
 
-void bt_set(rt_uint32_t baund)
-{
-	char * result;
-    struct rt_device *device;
-	
-	device=rt_device_find("bt1");
-	
-	GPIO_SetBits(GPIOA,GPIO_Pin_4);
-	
-	rt_kprintf("AT+UART=%d,0,0\n",baund);
-	
-	GPIO_ResetBits(GPIOA,GPIO_Pin_4);
-}
+//void bt_set(rt_uint32_t baund)
+//{
+//	char * result;
+//    struct rt_device *device;
+//	
+//	device=rt_device_find("bt1");
+//	
+//	GPIO_SetBits(GPIOA,GPIO_Pin_4);
+//	
+//	rt_kprintf("AT+UART=%d,0,0\n",baund);
+//	
+//	GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+//}
 
-FINSH_FUNCTION_EXPORT(bt_set, set blutooth rate)
+//FINSH_FUNCTION_EXPORT(bt_set, set blutooth rate)
 
 void rt_hw_bluetooth_init(){
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;

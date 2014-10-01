@@ -8,44 +8,25 @@ struct ahrs_t ahrs;
 int16_t mpu_acc_x,mpu_acc_y,mpu_acc_z;
 int16_t mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw;
 
-/*=====================================================================================================*/
-/*=====================================================================================================*/
-/*=====================================================================================================*/
-/*=====================================================================================================*
-**: MoveAve_SMA
-**: Simple Moving Average
-**: NewData, MoveAve_FIFO, SampleNum
-**: AveData
-**: MoveAve_SMA(NewData, MoveAve_FIFO, SampleNum)
-**=====================================================================================================*/
-/*=====================================================================================================*/
 s16 MoveAve_SMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
 {
 	u8 i = 0;
 	s16 AveData = 0;
 	s32 MoveAve_Sum = 0;
 
-	for (i = 0; i < SampleNum - 1; i++)       // ????
+	for (i = 0; i < SampleNum - 1; i++)      
 		MoveAve_FIFO[i] = MoveAve_FIFO[i + 1];
 
-	MoveAve_FIFO[SampleNum - 1] = NewData;    // ?????
+	MoveAve_FIFO[SampleNum - 1] = NewData;   
 
-	for (i = 0; i < SampleNum; i++)           // ??
+	for (i = 0; i < SampleNum; i++)        
 		MoveAve_Sum += MoveAve_FIFO[i];
 
-	AveData = (s16)(MoveAve_Sum / SampleNum); // ?????
+	AveData = (s16)(MoveAve_Sum / SampleNum);
 
 	return AveData;
 }
-/*=====================================================================================================*/
-/*=====================================================================================================*
-**: MoveAve_WMA
-**: Weighted Moving Average
-**: NewData, MoveAve_FIFO, SampleNum
-**: AveData
-**: MoveAve_WMA(NewData, MoveAve_FIFO, SampleNum)
-**=====================================================================================================*/
-/*=====================================================================================================*/
+
 static s16 MoveAve_WMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
 {
 	u8 i = 0;
@@ -53,16 +34,16 @@ static s16 MoveAve_WMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO,
 	u16 SampleSum = 0;
 	s32 MoveAve_Sum = 0;
 
-	for (i = 0; i < SampleNum - 1; i++)         // ????
+	for (i = 0; i < SampleNum - 1; i++)        
 		MoveAve_FIFO[i] = MoveAve_FIFO[i + 1];
 
-	MoveAve_FIFO[SampleNum - 1] = NewData;      // ?????
+	MoveAve_FIFO[SampleNum - 1] = NewData;   
 
-	for (i = 0; i < SampleNum; i++)             // ?? & ??
+	for (i = 0; i < SampleNum; i++)            
 		MoveAve_Sum += MoveAve_FIFO[i] * (i + 1);
 
-	SampleSum = (SampleNum * (SampleNum + 1)) / 2; // ??????
-	AveData = (s16)(MoveAve_Sum / SampleSum);   // ?????
+	SampleSum = (SampleNum * (SampleNum + 1)) / 2; 
+	AveData = (s16)(MoveAve_Sum / SampleSum);  
 
 	return AveData;
 }
@@ -73,17 +54,175 @@ static void get_fps()
 }
 FINSH_FUNCTION_EXPORT(get_fps, get ahrs fps)
 
+void Quaternion_ToNumQ(Quaternion *pNumQ, float pitch,float roll,float yaw)
+{
+	float halfP = pitch / 2.0f;
+	float halfR = roll / 2.0f;
+	float halfY = yaw / 2.0f;
+
+	float sinP = sin(halfP);
+	float cosP = cos(halfP);
+	float sinR = sin(halfR);
+	float cosR = cos(halfR);
+	float sinY = sin(halfY);
+	float cosY = cos(halfY);
+
+	pNumQ->q0 = cosY * cosR * cosP + sinY * sinR * sinP;
+	pNumQ->q1 = cosY * cosR * sinP - sinY * sinR * cosP;
+	pNumQ->q2 = cosY * sinR * cosP + sinY * cosR * sinP;
+	pNumQ->q3 = sinY * cosR * cosP - cosY * sinR * sinP;
+}
+
+void Quaternion_ToAngE(Quaternion *pNumQ)
+{
+	float NumQ_T11 = pNumQ->q0 * pNumQ->q0 + pNumQ->q1 * pNumQ->q1 - pNumQ->q2 * pNumQ->q2 - pNumQ->q3 * pNumQ->q3;
+	float NumQ_T12 = 2.0f * (pNumQ->q0 * pNumQ->q3 + pNumQ->q1 * pNumQ->q2);
+	float NumQ_T13 = 2.0f * (pNumQ->q1 * pNumQ->q3 - pNumQ->q0 * pNumQ->q2);
+	float NumQ_T23 = 2.0f * (pNumQ->q0 * pNumQ->q1 + pNumQ->q2 * pNumQ->q3);
+	float NumQ_T33 = pNumQ->q0 * pNumQ->q0 - pNumQ->q1 * pNumQ->q1 - pNumQ->q2 * pNumQ->q2 + pNumQ->q3 * pNumQ->q3;
+
+	ahrs.degree_pitch	=	-asinf(NumQ_T13);
+	ahrs.degree_roll	=	atan2f(NumQ_T23, NumQ_T33);
+	ahrs.degree_yaw		=	0;
+//	pAngE->Yaw   = atan2f(NumQ_T12, NumQ_T11);
+}
+
+rt_inline float toRad(float degree)
+{
+	return degree *3.14 / 180.0;
+}
+
+//=====================================================================================================
+// AHRS.c
+// S.O.H. Madgwick
+// 25th August 2010
+//=====================================================================================================
+// Description:
+//
+// Quaternion implementation of the 'DCM filter' [Mayhony et al].  Incorporates the magnetic distortion
+// compensation algorithms from my filter [Madgwick] which eliminates the need for a reference
+// direction of flux (bx bz) to be predefined and limits the effect of magnetic distortions to yaw
+// axis only.
+//
+// User must define 'halfT' as the (sample period / 2), and the filter gains 'Kp' and 'Ki'.
+//
+// Global variables 'q0', 'q1', 'q2', 'q3' are the quaternion elements representing the estimated
+// orientation.  See my report for an overview of the use of quaternions in this application.
+//
+// User must call 'AHRSupdate()' every sample period and parse calibrated gyroscope ('gx', 'gy', 'gz'),
+// accelerometer ('ax', 'ay', 'ay') and magnetometer ('mx', 'my', 'mz') data.  Gyroscope units are
+// radians/second, accelerometer and magnetometer units are irrelevant as the vector is normalised.
+//
+//=====================================================================================================
+
+//----------------------------------------------------------------------------------------------------
+// Definitions
+Quaternion curq;
+
+//#define USE_QUATERNION
+
+#define q0 curq.q0
+#define q1 curq.q1
+#define q2 curq.q2
+#define q3 curq.q3
+
+#define Kp 15.0f                        // proportional gain governs rate of convergence to accelerometer/magnetometer
+#define Ki 0.02f                // integral gain governs rate of convergence of gyroscope biases
+#define halfT (dt / 2.0)                // half the sample period
+
+//---------------------------------------------------------------------------------------------------
+// Variable definitions
+
+float exInt = 0, eyInt = 0, ezInt = 0;        // scaled integral error
+
+//====================================================================================================
+// Function
+//====================================================================================================
+
+void AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az/*, float mx, float my, float mz*/) {
+        float norm;
+ //       float hx, hy, hz, bx, bz;
+        float vx, vy, vz/*, wx, wy, wz*/;
+        float ex, ey, ez;
+
+        // auxiliary variables to reduce number of repeated operations
+        float q0q0 = q0*q0;
+        float q0q1 = q0*q1;
+        float q0q2 = q0*q2;
+//        float q0q3 = q0*q3;
+        float q1q1 = q1*q1;
+//        float q1q2 = q1*q2;
+        float q1q3 = q1*q3;
+        float q2q2 = q2*q2;   
+        float q2q3 = q2*q3;
+        float q3q3 = q3*q3;          
+        
+        // normalise the measurements
+        norm = sqrt(ax*ax + ay*ay + az*az);       
+        ax = ax / norm;
+        ay = ay / norm;
+        az = az / norm;
+//        norm = sqrt(mx*mx + my*my + mz*mz);          
+//        mx = mx / norm;
+//        my = my / norm;
+//        mz = mz / norm;         
+        
+        // compute reference direction of flux
+//        hx = 2*mx*(0.5 - q2q2 - q3q3) + 2*my*(q1q2 - q0q3) + 2*mz*(q1q3 + q0q2);
+//        hy = 2*mx*(q1q2 + q0q3) + 2*my*(0.5 - q1q1 - q3q3) + 2*mz*(q2q3 - q0q1);
+//        hz = 2*mx*(q1q3 - q0q2) + 2*my*(q2q3 + q0q1) + 2*mz*(0.5 - q1q1 - q2q2);         
+//        bx = sqrt((hx*hx) + (hy*hy));
+//        bz = hz;        
+        
+        // estimated direction of gravity and flux (v and w)
+        vx = 2*(q1q3 - q0q2);
+        vy = 2*(q0q1 + q2q3);
+        vz = q0q0 - q1q1 - q2q2 + q3q3;
+//        wx = 2*bx*(0.5 - q2q2 - q3q3) + 2*bz*(q1q3 - q0q2);
+//        wy = 2*bx*(q1q2 - q0q3) + 2*bz*(q0q1 + q2q3);
+//        wz = 2*bx*(q0q2 + q1q3) + 2*bz*(0.5 - q1q1 - q2q2);  
+        
+        // error is sum of cross product between reference direction of fields and direction measured by sensors
+        ex = (ay*vz - az*vy)/* + (my*wz - mz*wy)*/;
+        ey = (az*vx - ax*vz)/* + (mz*wx - mx*wz)*/;
+        ez = (ax*vy - ay*vx)/* + (mx*wy - my*wx)*/;
+        
+        // integral error scaled integral gain
+        exInt = exInt + ex*Ki;
+        eyInt = eyInt + ey*Ki;
+        ezInt = ezInt + ez*Ki;
+        
+        // adjusted gyroscope measurements
+        gx = gx + Kp*ex + exInt;
+        gy = gy + Kp*ey + eyInt;
+        gz = gz + Kp*ez + ezInt;
+        
+        // integrate quaternion rate and normalise
+        q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
+        q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
+        q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
+        q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;  
+        
+        // normalise quaternion
+        norm = sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+        q0 = q0 / norm;
+        q1 = q1 / norm;
+        q2 = q2 / norm;
+        q3 = q3 / norm;
+}
+
 void ahrs_update()
 {
 	double ax,ay;
 	const double a = 0.98;
 	const double gyroscale = 1000.0;
-  //  double 
+	
 	dt = Timer4_GetSec();
 	
-	ahrs.gryo_pitch		= mpu_gryo_pitch * gyroscale / 32767.0;
-	ahrs.gryo_roll		= mpu_gryo_roll * gyroscale / 32767.0;
-	ahrs.gryo_yaw		= mpu_gryo_yaw * gyroscale / 32767.0;
+	ahrs.gryo_pitch		= mpu_gryo_pitch 	* gyroscale / 32767.0;
+	ahrs.gryo_roll		= mpu_gryo_roll 	* gyroscale / 32767.0;
+	ahrs.gryo_yaw		= mpu_gryo_yaw 		* gyroscale / 32767.0;
+#ifndef USE_QUATERNION
 	ax					= atan2(
 							mpu_acc_y,
 							sqrt(mpu_acc_x * mpu_acc_x +mpu_acc_z * mpu_acc_z)
@@ -95,6 +234,13 @@ void ahrs_update()
 	ahrs.degree_pitch	= a * (ahrs.degree_pitch  + ahrs.gryo_pitch * dt) + (1 - a) * ax;
 	ahrs.degree_roll	= a * (ahrs.degree_roll + ahrs.gryo_roll * dt) + (1 - a) * ay;
 	ahrs.degree_yaw		= ahrs.degree_yaw + ahrs.gryo_yaw * dt;
+#else
+	Quaternion_ToNumQ(&curq,ahrs.degree_pitch,ahrs.degree_roll,ahrs.degree_yaw);
+	
+	AHRSupdate(toRad(ahrs.gryo_pitch)	,toRad(ahrs.gryo_roll)	,toRad(ahrs.gryo_yaw)	,mpu_acc_x	,mpu_acc_y	,mpu_acc_z);
+	
+	Quaternion_ToAngE(&curq);
+#endif
 	ahrs.time_span		= dt;
 }
 
@@ -107,7 +253,7 @@ void ahrs_put_mpu6050(s16 * data)
 	mpu_gryo_pitch=(MoveAve_WMA(data[3], MPU6050_GYR_FIFO[0], 8)+MPU6050_Diff[0]);
 	mpu_gryo_roll=(MoveAve_WMA(data[4], MPU6050_GYR_FIFO[1], 8)+MPU6050_Diff[1]);
 	mpu_gryo_yaw=(MoveAve_WMA(data[5], MPU6050_GYR_FIFO[2], 8)+MPU6050_Diff[2]);
-	mpu_acc_x=MoveAve_WMA(data[0], MPU6050_ACC_FIFO[0], 16)+MPU6050_Diff[3];
-	mpu_acc_y=MoveAve_WMA(data[1], MPU6050_ACC_FIFO[1], 16)+MPU6050_Diff[4];
-	mpu_acc_z=MoveAve_WMA(data[2], MPU6050_ACC_FIFO[2], 16)+MPU6050_Diff[5];
+	mpu_acc_x=MoveAve_WMA(data[0], MPU6050_ACC_FIFO[0], 10)+MPU6050_Diff[3];
+	mpu_acc_y=MoveAve_WMA(data[1], MPU6050_ACC_FIFO[1], 10)+MPU6050_Diff[4];
+	mpu_acc_z=MoveAve_WMA(data[2], MPU6050_ACC_FIFO[2], 10)+MPU6050_Diff[5];
 }

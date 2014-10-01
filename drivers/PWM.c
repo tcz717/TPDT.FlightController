@@ -16,7 +16,7 @@ void PWMOUT1_Init()
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1; 
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	TIM_TimeBaseStructure.TIM_Period = 9999; 
+	TIM_TimeBaseStructure.TIM_Period = 5999; 
 	TIM_TimeBaseStructure.TIM_Prescaler =35; 
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0; 
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  

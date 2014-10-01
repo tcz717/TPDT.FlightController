@@ -13,12 +13,14 @@
 #include "Motor.h"
 #include "hardtimer.h"
 #include "PID.h"
+#include "settings.h"
 
 #ifdef RT_USING_DFS
 /* dfs filesystem:ELM filesystem init */
 #include <dfs_elm.h>
 /* dfs Filesystem APIs */
 #include <dfs_fs.h>
+#include <dfs_posix.h> 
 #endif
 
 //#define FC_DEBUG
@@ -58,6 +60,11 @@ static rt_uint8_t mpu6050_stack[ 512 ];
 static struct rt_thread mpu6050_thread;
 static struct rt_semaphore mpu6050_sem;
 
+ALIGN(RT_ALIGN_SIZE)
+static rt_uint8_t l3g4200d_stack[ 512 ];
+static struct rt_thread l3g4200d_thread;
+static struct rt_semaphore l3g4200d_sem;
+
 u8 led_period[4];
 void led_thread_entry(void* parameter)
 {
@@ -79,50 +86,52 @@ void led_thread_entry(void* parameter)
 		if(led_period[0])
 			time[3]=time[3]%led_period[3];
 		LED_set4(!time[3]);
-		rt_thread_delay(250);
+		rt_thread_delay(50);
 	}
 }
 
 
 u8 balence=0;
 u8 pwmcon=0;
+PID pitch_pid,roll_pid,yaw_pid;
 void control_thread_entry(void* parameter)
 {
 	u16 throttle=0;
-	u16 th_min=1000,th_max=2000;
-	PID pitch_pid,roll_pid;
 	
 	pitch_pid.expect=0;
 	roll_pid.expect=0;
+	yaw_pid.expect=0;
 	
-	debug("start control\n");
+	rt_kprintf("start control\n");
 	
 	while(1)
 	{
 		LED3(balence*2);
-//		debug("i3:%d	i5:%d	o1:%d\n",PWM3_Time,PWM5_Time,throttle);
+		debug("i3:%d	i5:%d	o1:%d\n",PWM3_Time,PWM5_Time,throttle);
 		if(pwmcon)
 		{
-			if(PWM3_Time<=th_max&&PWM3_Time>=th_min)
-				throttle=(PWM3_Time-th_min)*1000/(th_max-th_min);
+			if(PWM3_Time<=settings.th_max&&PWM3_Time>=settings.th_min)
+				throttle=(PWM3_Time-settings.th_min)*1000/(settings.th_max-settings.th_min);
 			else 
 				throttle=0;
 			if(!balence)
 				Motor_Set(throttle,throttle,throttle,throttle);
 		}
-		else if(PWM3_Time>th_min&&PWM3_Time<th_min+40&&
+		else if(PWM3_Time>settings.th_min&&PWM3_Time<settings.th_min+40&&
 			PWM5_Time<1500&&PWM5_Time>500)
 		{
+			//set pwm middle
+			if(!pwmcon)
+			{
+				settings.roll_mid	=PWM1_Time;
+				settings.pitch_mid	=PWM2_Time;
+				settings.yaw_mid	=PWM4_Time;
+			}
 			pwmcon=1;
 			balence=1;
-			pitch_pid.p=4;
-			pitch_pid.i=0;
-			pitch_pid.d=1.6;
-			roll_pid.p=4;
-			roll_pid.i=0;
-			roll_pid.d=1.6;
 			pitch_pid.iv=0;
 			roll_pid.iv=0;
+			yaw_pid.iv=0;
 		}
 		
 		if(balence)
@@ -131,10 +140,11 @@ void control_thread_entry(void* parameter)
 			{
 				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
 				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
-				Motor_Set1(throttle - pitch_pid.out + roll_pid.out);
-				Motor_Set2(throttle - pitch_pid.out - roll_pid.out);
-				Motor_Set3(throttle + pitch_pid.out - roll_pid.out);
-				Motor_Set4(throttle + pitch_pid.out + roll_pid.out);
+				PID_Update(&yaw_pid		,ahrs.degree_yaw	,ahrs.gryo_yaw);
+				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out);
+				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out);
+				Motor_Set3(throttle + pitch_pid.out - roll_pid.out - yaw_pid.out);
+				Motor_Set4(throttle + pitch_pid.out + roll_pid.out + yaw_pid.out);
 				
 				debug( "m1:%d	m2:%d	m3:%d	m4:%d\n",
 				(u16)(throttle - pitch_pid.out + roll_pid.out),
@@ -148,13 +158,22 @@ void control_thread_entry(void* parameter)
 		
 		if(PWM5_Time>1500)
 		{
-			if(PWM3_Time<th_min)
-				th_min=PWM3_Time;
-			if(PWM3_Time>th_max)
-				th_max=PWM3_Time;
+			settings.roll_min= min(settings.roll_min, PWM1_Time);
+			settings.roll_max= max(settings.roll_max, PWM1_Time);	
+			
+			settings.pitch_min= min(settings.pitch_min, PWM2_Time);
+			settings.pitch_max= max(settings.pitch_max, PWM2_Time);
+			
+			settings.yaw_min= min(settings.yaw_min, PWM4_Time);
+			settings.yaw_max= max(settings.yaw_max, PWM4_Time);
+			if(PWM3_Time<settings.th_min)
+				settings.th_min=PWM3_Time;
+			if(PWM3_Time>settings.th_max)
+				settings.th_max=PWM3_Time;
 			Motor_Set(0,0,0,0);
 			pitch_pid.iv=0;
 			roll_pid.iv=0;
+			yaw_pid.iv=0;
 			balence=0;
 			pwmcon=0;
 			LED_set2(1);
@@ -174,7 +193,7 @@ void correct_thread_entry(void* parameter)
 		rt_int16_t * mpu1, * mpu2, * mpu3;
 		rt_int16_t m1,m2,m3;
 		
-		debug("start correct\n");
+		rt_kprintf("start sensors correct\n");
 		
 		mpu1 = (rt_int16_t *)rt_calloc(200,sizeof(rt_int16_t));
 		mpu2 = (rt_int16_t *)rt_calloc(200,sizeof(rt_int16_t));
@@ -200,7 +219,7 @@ void correct_thread_entry(void* parameter)
 		rt_free(mpu2);
 		rt_free(mpu3);
 		
-		rt_kprintf("correct finish.\n");
+		rt_kprintf("sensor correct finish.\n");
 	}
 	while(1)
 	{
@@ -211,19 +230,19 @@ void correct_thread_entry(void* parameter)
 void ahrs_thread_entry(void* parameter)
 {
 	rt_uint32_t e;
-	rt_bool_t b;
 	
-	debug("start ahrs\n");
+	rt_kprintf("start ahrs\n");
 	
 	while(1)
 	{
 		rt_sem_release(&mpu6050_sem);
+//		rt_sem_release(&l3g4200d_sem);
 		
 		if(rt_event_recv(&ahrs_event,1,
 						RT_EVENT_FLAG_AND|RT_EVENT_FLAG_CLEAR,
-						6,&e)==RT_EOK)
+						2,&e)==RT_EOK)
 		{
-			LED4(1);
+			LED4(2);
 //			debug("AHRS Received OK\n");
 			ahrs_update();
 			debug("%d,%d,%d		%d\n",
@@ -238,6 +257,7 @@ void ahrs_thread_entry(void* parameter)
 			LED4(0);
 			debug("ahrs timeout!\n");
 		}
+		rt_thread_delay(2);
 	}
 }
 
@@ -248,7 +268,7 @@ void mpu6050_thread_entry(void* parameter)
 	MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_1000);
 	MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 	
-	debug("start mpu6050\n");
+	rt_kprintf("start mpu6050\n");
 	
 	while(1)
 	{
@@ -256,10 +276,9 @@ void mpu6050_thread_entry(void* parameter)
 		if( MPU6050_TestConnection())
 		{
 			MPU6050_GetRawAccelGyro(AccelGyro);
-//			debug("%d,%d,%d,%d,%d,%d\n",AccelGyro[0],AccelGyro[1],
-//			AccelGyro[2],AccelGyro[3],
-//			AccelGyro[4],AccelGyro[5]);
 			
+			//rt_kprintf("%d,%d,%d,%d,%d,%d\n",
+//			AccelGyro[0],AccelGyro[1],AccelGyro[2],AccelGyro[3],AccelGyro[4],AccelGyro[5]);
 			ahrs_put_mpu6050(AccelGyro);
 			
 			rt_event_send(&ahrs_event,1);
@@ -268,7 +287,28 @@ void mpu6050_thread_entry(void* parameter)
 		{
 			debug("error:lost mpu6050.\n");
 		}
-		rt_thread_delay(4);
+	}
+}
+
+void l3g4200d_thread_entry(void* parameter)
+{
+	struct l3g4200d_data data;
+	rt_sem_init(&l3g4200d_sem,"l3g_t",0,RT_IPC_FLAG_FIFO);		
+	
+	rt_kprintf("start l3g4200d\n");
+	
+	while(1)
+	{
+		rt_sem_take(&l3g4200d_sem,RT_WAITING_FOREVER);
+		if( l3g4200d_TestConnection())
+		{
+			l3g4200d_read(&data);
+			debug("\t%d\t%d\t%d\n",data.x,data.y,data.z);
+		}
+		else
+		{
+			debug("error:lost l3g4200d.\n");
+		}
 	}
 }
 
@@ -278,26 +318,59 @@ void rt_init_thread_entry(void* parameter)
 	
     finsh_set_device(RT_CONSOLE_DEVICE_NAME);
 	
-	LED_init();
-	Motor_Init();
-	Motor_Set(0,0,0,0);
+	LED4(5);
+	rt_kprintf("start device init\n");
 	
 	rt_hw_i2c1_init();
 	rt_hw_spi2_init();
 	
+	rt_thread_init(&led_thread,
+					"led",
+					led_thread_entry,
+					RT_NULL,
+                    led_stack,
+					256, 16, 1);
+    rt_thread_startup(&led_thread);
+	
 	spi_flash_init();
 	
-//	{
-//		rt_device_t flash;
-//		flash=rt_device_find("flash0");
-//		
-//		rt_device_write(flash,0,0,0);
-//	}
-	
-	Timer4_init();
 	mpu6050_init("i2c1");
 //	bmp085_init("i2c1");
 //	l3g4200d_init("i2c1");
+//	while(1)
+//		if( l3g4200d_TestConnection())
+//		{
+//			struct l3g4200d_data data;
+//			l3g4200d_read(&data);
+//			debug("\t%d\t%d\t%d\n",data.x,data.y,data.z);
+//		}
+//		else
+//			debug("retry\n");
+	
+	rt_kprintf("device init succeed\n");
+	
+    if (dfs_mount("flash0", "/", "elm", 0, 0) == 0)
+    {
+        rt_kprintf("flash0 mount to /.\n");
+    }
+    else
+    {
+        rt_kprintf("flash0 mount to / failed.\n");
+    }
+
+	//default settings
+	PID_Init(&pitch_pid,3.2,0,1.2);
+	PID_Init(&roll_pid,3.2,0,1.2);
+	PID_Init(&yaw_pid,0,0,1.5);
+	settings.th_min	=2000;
+	settings.roll_min	=settings.pitch_min	=settings.yaw_min	=1600;
+	settings.th_max	=1000;
+	settings.roll_max	=settings.pitch_max	=settings.yaw_max	=1400;
+	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
+	
+	get_pid();
+	
+	LED4(0);
 	
 	rt_event_init(&ahrs_event,"ahrs_e",RT_IPC_FLAG_FIFO);
 	
@@ -306,10 +379,17 @@ void rt_init_thread_entry(void* parameter)
 					mpu6050_thread_entry,
 					RT_NULL,
                     mpu6050_stack,
-					512, 8, 20);
+					512, 8, 10);
     rt_thread_startup(&mpu6050_thread);
 	
-	rt_kprintf("thread0 ok\n");
+	
+	rt_thread_init(&l3g4200d_thread,
+					"l3g4200d",
+					l3g4200d_thread_entry,
+					RT_NULL,
+                    l3g4200d_stack,
+					512, 8, 10);
+    //rt_thread_startup(&l3g4200d_thread);
 	
 	rt_thread_init(&ahrs_thread,
 					"ahrs",
@@ -319,8 +399,6 @@ void rt_init_thread_entry(void* parameter)
 					512, 5, 10);
     rt_thread_startup(&ahrs_thread);
 	
-	rt_kprintf("thread1 ok\n");
-	
 	rt_thread_init(&control_thread,
 					"control",
 					control_thread_entry,
@@ -329,8 +407,6 @@ void rt_init_thread_entry(void* parameter)
 					512, 3, 2);
     rt_thread_startup(&control_thread);
 	
-	rt_kprintf("thread2 ok\n");
-	
 	rt_thread_init(&correct_thread,
 					"correct",
 					correct_thread_entry,
@@ -338,17 +414,6 @@ void rt_init_thread_entry(void* parameter)
                     correct_stack,
 					256, 12, 1);
     rt_thread_startup(&correct_thread);
-	
-	rt_kprintf("thread3 ok\n");
-	
-	
-	rt_thread_init(&led_thread,
-					"led",
-					led_thread_entry,
-					RT_NULL,
-                    led_stack,
-					256, 16, 1);
-    rt_thread_startup(&led_thread);
 	
 	LED1(1);
 }
