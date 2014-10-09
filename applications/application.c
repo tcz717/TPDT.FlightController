@@ -52,7 +52,7 @@ static struct rt_thread ahrs_thread;
 static struct rt_event ahrs_event;
 
 ALIGN(RT_ALIGN_SIZE)
-static rt_uint8_t correct_stack[ 256 ];
+static rt_uint8_t correct_stack[ 512 ];
 static struct rt_thread correct_thread;
 
 ALIGN(RT_ALIGN_SIZE)
@@ -94,9 +94,16 @@ void led_thread_entry(void* parameter)
 u8 balence=0;
 u8 pwmcon=0;
 PID pitch_pid,roll_pid,yaw_pid;
+s16 pitch_ctl[16],roll_ctl[16],yaw_ctl[16];
+
+rt_bool_t lost_ahrs=RT_FALSE;
+rt_tick_t last_ahrs;
 void control_thread_entry(void* parameter)
 {
 	u16 throttle=0;
+	double pitch=0;
+	double roll=0;
+	double yaw=0;
 	
 	pitch_pid.expect=0;
 	roll_pid.expect=0;
@@ -108,12 +115,47 @@ void control_thread_entry(void* parameter)
 	{
 		LED3(balence*2);
 		debug("i3:%d	i5:%d	o1:%d\n",PWM3_Time,PWM5_Time,throttle);
+		debug("p:%d	%d	r:%d	%d\n",(s16)pitch,(s16)pitch_pid.expect,(s16)roll,(s16)roll_pid.expect);
 		if(pwmcon)
 		{
 			if(PWM3_Time<=settings.th_max&&PWM3_Time>=settings.th_min)
 				throttle=(PWM3_Time-settings.th_min)*1000/(settings.th_max-settings.th_min);
 			else 
 				throttle=0;
+			
+			if(PWM1_Time<=settings.roll_max&&PWM1_Time>=settings.roll_min)
+			{
+				roll	=MoveAve_WMA(PWM1_Time,roll_ctl,16)		-	settings.roll_mid;
+				if(roll>5)
+					PID_SetTarget(&roll_pid,-roll/(double)(settings.roll_max	-	settings.roll_mid)*45.0);
+				else if(roll<-5)
+					PID_SetTarget(&roll_pid,-roll
+											/(double)(settings.roll_mid	-	settings.roll_min)*45.0);
+				else
+					roll=0;
+			}
+			if(PWM2_Time<=settings.pitch_max&&PWM2_Time>=settings.pitch_min)
+			{
+				pitch	=MoveAve_WMA(PWM2_Time,pitch_ctl,16)	-	settings.pitch_mid;
+				if(pitch>5)
+					PID_SetTarget(&pitch_pid,-pitch
+											/(double)(settings.pitch_max	-	settings.pitch_mid)*45.0);
+				else if(pitch<-5)
+					PID_SetTarget(&pitch_pid,-pitch
+										/(double)(settings.pitch_mid	-	settings.pitch_min)*45.0);
+				else 
+					pitch=0;
+			}	
+			if(PWM4_Time<=settings.yaw_max&&PWM4_Time>=settings.yaw_min)
+			{
+				yaw	=MoveAve_WMA(PWM4_Time,yaw_ctl,16)	-	settings.yaw_mid;
+				if(yaw>5)
+					yaw=-yaw/(double)(settings.yaw_max	-	settings.yaw_mid)*300.0;
+				else if(yaw<-5)
+					yaw=-yaw/(double)(settings.yaw_mid	-	settings.yaw_min)*300.0;
+				else
+					yaw=0;
+			}	
 			if(!balence)
 				Motor_Set(throttle,throttle,throttle,throttle);
 		}
@@ -141,10 +183,10 @@ void control_thread_entry(void* parameter)
 				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
 				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
 				PID_Update(&yaw_pid		,ahrs.degree_yaw	,ahrs.gryo_yaw);
-				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out);
-				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out);
-				Motor_Set3(throttle + pitch_pid.out - roll_pid.out - yaw_pid.out);
-				Motor_Set4(throttle + pitch_pid.out + roll_pid.out + yaw_pid.out);
+				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out + yaw);
+				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out - yaw);
+				Motor_Set3(throttle + pitch_pid.out - roll_pid.out - yaw_pid.out - yaw);
+				Motor_Set4(throttle + pitch_pid.out + roll_pid.out + yaw_pid.out + yaw);
 				
 				debug( "m1:%d	m2:%d	m3:%d	m4:%d\n",
 				(u16)(throttle - pitch_pid.out + roll_pid.out),
@@ -158,18 +200,18 @@ void control_thread_entry(void* parameter)
 		
 		if(PWM5_Time>1500)
 		{
-			settings.roll_min= min(settings.roll_min, PWM1_Time);
-			settings.roll_max= max(settings.roll_max, PWM1_Time);	
-			
-			settings.pitch_min= min(settings.pitch_min, PWM2_Time);
-			settings.pitch_max= max(settings.pitch_max, PWM2_Time);
-			
-			settings.yaw_min= min(settings.yaw_min, PWM4_Time);
-			settings.yaw_max= max(settings.yaw_max, PWM4_Time);
-			if(PWM3_Time<settings.th_min)
-				settings.th_min=PWM3_Time;
-			if(PWM3_Time>settings.th_max)
-				settings.th_max=PWM3_Time;
+//			settings.roll_min= min(settings.roll_min, PWM1_Time);
+//			settings.roll_max= max(settings.roll_max, PWM1_Time);	
+//			
+//			settings.pitch_min= min(settings.pitch_min, PWM2_Time);
+//			settings.pitch_max= max(settings.pitch_max, PWM2_Time);
+//			
+//			settings.yaw_min= min(settings.yaw_min, PWM4_Time);
+//			settings.yaw_max= max(settings.yaw_max, PWM4_Time);
+//			if(PWM3_Time<settings.th_min)
+//				settings.th_min=PWM3_Time;
+//			if(PWM3_Time>settings.th_max)
+//				settings.th_max=PWM3_Time;
 			Motor_Set(0,0,0,0);
 			pitch_pid.iv=0;
 			roll_pid.iv=0;
@@ -181,17 +223,17 @@ void control_thread_entry(void* parameter)
 		else
 			LED_set2(0);
 		
-		rt_thread_delay(10);
+		rt_thread_delay(5);
 	}
 }
 
 void correct_thread_entry(void* parameter)
 {
 	rt_uint32_t e;
+	rt_uint16_t i;
+	rt_int16_t * mpu1, * mpu2, * mpu3;
+	rt_int16_t m1,m2,m3;
 	{
-		rt_uint16_t i;
-		rt_int16_t * mpu1, * mpu2, * mpu3;
-		rt_int16_t m1,m2,m3;
 		
 		rt_kprintf("start sensors correct\n");
 		
@@ -221,9 +263,47 @@ void correct_thread_entry(void* parameter)
 		
 		rt_kprintf("sensor correct finish.\n");
 	}
+	rt_sem_init(&acc_fix_sem,"acc_fix",0,RT_IPC_FLAG_FIFO);
+	
 	while(1)
 	{
-		rt_thread_suspend(rt_thread_self());
+		rt_sem_take(&acc_fix_sem,RT_WAITING_FOREVER);
+		rt_kprintf("start acc fix\n");
+	
+		MPU6050_Diff[3]=0;
+		MPU6050_Diff[4]=0;
+		MPU6050_Diff[5]=0;
+		
+		mpu1 = (rt_int16_t *)rt_calloc(255,sizeof(rt_int16_t));
+		mpu2 = (rt_int16_t *)rt_calloc(255,sizeof(rt_int16_t));
+		mpu3 = (rt_int16_t *)rt_calloc(255,sizeof(rt_int16_t));
+		
+		for(i=0;i<255;i++)
+		{
+			if(rt_event_recv(&ahrs_event,AHRS_EVENT_Update,
+				RT_EVENT_FLAG_AND|RT_EVENT_FLAG_CLEAR,
+				RT_WAITING_FOREVER,&e)==RT_EOK)
+			{
+				m1=MoveAve_SMA(mpu_acc_x	, mpu1, 255);
+				m2=MoveAve_SMA(mpu_acc_y	, mpu2, 255);
+				m3=MoveAve_SMA(mpu_acc_z	, mpu3, 255);
+			}
+		}
+		
+		settings.mpu6050_acc_diff[0]=MPU6050_Diff[3]=-m1;
+		settings.mpu6050_acc_diff[1]=MPU6050_Diff[4]=-m2;
+		settings.mpu6050_acc_diff[2]=MPU6050_Diff[5]=-m3 + HALF_SIGNED16 / MPU6050_ACC_SCALE;
+		
+		rt_free(mpu1);
+		rt_free(mpu2);
+		rt_free(mpu3);
+		
+		rt_kprintf( "ax:%d	ay:%d	az:%d\n",
+				(s16)(MPU6050_Diff[3]),
+				(s16)(MPU6050_Diff[4]),
+				(s16)(MPU6050_Diff[5]));
+		
+		rt_kprintf("acc fix finish.\n");
 	}
 }
 
@@ -232,6 +312,8 @@ void ahrs_thread_entry(void* parameter)
 	rt_uint32_t e;
 	
 	rt_kprintf("start ahrs\n");
+	
+	last_ahrs=rt_tick_get();
 	
 	while(1)
 	{
@@ -243,8 +325,10 @@ void ahrs_thread_entry(void* parameter)
 						2,&e)==RT_EOK)
 		{
 			LED4(2);
-//			debug("AHRS Received OK\n");
+			
 			ahrs_update();
+			last_ahrs=rt_tick_get();
+			
 			debug("%d,%d,%d		%d\n",
 			(s32)(ahrs.degree_pitch),
 			(s32)(ahrs.degree_roll),
@@ -255,7 +339,16 @@ void ahrs_thread_entry(void* parameter)
 		else
 		{
 			LED4(0);
+			Timer4_GetSec();
 			debug("ahrs timeout!\n");
+			if(rt_tick_get()-last_ahrs>1000)
+			{
+				lost_ahrs=RT_TRUE;
+				debug("ahrs connection wrong!\n");
+				Motor_Set(0,0,0,0);
+				rt_thread_detach(&control_thread);
+				return;
+			}
 		}
 		rt_thread_delay(2);
 	}
@@ -277,11 +370,14 @@ void mpu6050_thread_entry(void* parameter)
 		{
 			MPU6050_GetRawAccelGyro(AccelGyro);
 			
-			//rt_kprintf("%d,%d,%d,%d,%d,%d\n",
-//			AccelGyro[0],AccelGyro[1],AccelGyro[2],AccelGyro[3],AccelGyro[4],AccelGyro[5]);
-			ahrs_put_mpu6050(AccelGyro);
+			debug("%d,%d,%d,%d,%d,%d\n",
+				mpu_acc_x,mpu_acc_y,mpu_acc_z,mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw);
+			if(AccelGyro[1]!=AccelGyro[4]&&AccelGyro[2]!=AccelGyro[5])
+			{
+				ahrs_put_mpu6050(AccelGyro);
+				rt_event_send(&ahrs_event,1);
+			}
 			
-			rt_event_send(&ahrs_event,1);
 		}
 		else
 		{
@@ -361,12 +457,14 @@ void rt_init_thread_entry(void* parameter)
 	//default settings
 	PID_Init(&pitch_pid,3.2,0,1.2);
 	PID_Init(&roll_pid,3.2,0,1.2);
-	PID_Init(&yaw_pid,0,0,1.5);
-	settings.th_min	=2000;
-	settings.roll_min	=settings.pitch_min	=settings.yaw_min	=1600;
-	settings.th_max	=1000;
-	settings.roll_max	=settings.pitch_max	=settings.yaw_max	=1400;
+	PID_Init(&yaw_pid,0,0,2);
+	
 	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
+	
+	settings.roll_min	=settings.pitch_min	=settings.yaw_min	=1000;
+	settings.th_min	=1000;
+	settings.roll_max	=settings.pitch_max	=settings.yaw_max	=2000;
+	settings.th_max	=2000;
 	
 	get_pid();
 	
@@ -412,7 +510,7 @@ void rt_init_thread_entry(void* parameter)
 					correct_thread_entry,
 					RT_NULL,
                     correct_stack,
-					256, 12, 1);
+					512, 12, 1);
     rt_thread_startup(&correct_thread);
 	
 	LED1(1);

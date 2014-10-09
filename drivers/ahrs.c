@@ -7,6 +7,7 @@
 struct ahrs_t ahrs;
 int16_t mpu_acc_x,mpu_acc_y,mpu_acc_z;
 int16_t mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw;
+struct rt_semaphore acc_fix_sem;
 
 s16 MoveAve_SMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
 {
@@ -27,7 +28,7 @@ s16 MoveAve_SMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 Sam
 	return AveData;
 }
 
-static s16 MoveAve_WMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
+s16 MoveAve_WMA(volatile int16_t NewData, volatile int16_t *MoveAve_FIFO, u8 SampleNum)
 {
 	u8 i = 0;
 	s16 AveData = 0;
@@ -86,6 +87,12 @@ void Quaternion_ToAngE(Quaternion *pNumQ)
 	ahrs.degree_yaw		=	0;
 //	pAngE->Yaw   = atan2f(NumQ_T12, NumQ_T11);
 }
+
+void acc_fix()
+{
+	rt_sem_release(&acc_fix_sem);
+}
+FINSH_FUNCTION_EXPORT(acc_fix, fix mpu6050 acc )
 
 rt_inline float toRad(float degree)
 {
@@ -215,7 +222,7 @@ void ahrs_update()
 {
 	double ax,ay;
 	const double a = 0.98;
-	const double gyroscale = 1000.0;
+	const double gyroscale = MPU6050_GYRO_SCALE;
 	
 	dt = Timer4_GetSec();
 	
@@ -250,10 +257,10 @@ volatile int16_t MPU6050_GYR_FIFO[3][256] = {{0}};
 double MPU6050_Diff[6]={0};
 void ahrs_put_mpu6050(s16 * data)
 {
-	mpu_gryo_pitch=(MoveAve_WMA(data[3], MPU6050_GYR_FIFO[0], 8)+MPU6050_Diff[0]);
-	mpu_gryo_roll=(MoveAve_WMA(data[4], MPU6050_GYR_FIFO[1], 8)+MPU6050_Diff[1]);
-	mpu_gryo_yaw=(MoveAve_WMA(data[5], MPU6050_GYR_FIFO[2], 8)+MPU6050_Diff[2]);
-	mpu_acc_x=MoveAve_WMA(data[0], MPU6050_ACC_FIFO[0], 10)+MPU6050_Diff[3];
-	mpu_acc_y=MoveAve_WMA(data[1], MPU6050_ACC_FIFO[1], 10)+MPU6050_Diff[4];
-	mpu_acc_z=MoveAve_WMA(data[2], MPU6050_ACC_FIFO[2], 10)+MPU6050_Diff[5];
+	mpu_gryo_pitch=(MoveAve_WMA(data[3], MPU6050_GYR_FIFO[0], 2)+MPU6050_Diff[0]);
+	mpu_gryo_roll=(MoveAve_WMA(data[4], MPU6050_GYR_FIFO[1], 2)+MPU6050_Diff[1]);
+	mpu_gryo_yaw=(MoveAve_WMA(data[5], MPU6050_GYR_FIFO[2], 2)+MPU6050_Diff[2]);
+	mpu_acc_x=MoveAve_WMA(data[0], MPU6050_ACC_FIFO[0], 2)+MPU6050_Diff[3];
+	mpu_acc_y=MoveAve_WMA(data[1], MPU6050_ACC_FIFO[1], 2)+MPU6050_Diff[4];
+	mpu_acc_z=MoveAve_WMA(data[2], MPU6050_ACC_FIFO[2], 2)+MPU6050_Diff[5];
 }

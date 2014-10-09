@@ -3,10 +3,10 @@
 void PID_SetTarget(PID* pid,double value)
 {
 	pid->expect = value;
-	pid->out = 0;
-	pid->iv = 0;
-	pid->dv=0;
-	pid->ldv=0;
+//	pid->out = 0;
+//	pid->iv = 0;
+//	pid->dv=0;
+//	pid->ldv=0;
 }
 double PID_Update(PID* pid,double value, double dv)
 {
@@ -20,8 +20,8 @@ double PID_Update(PID* pid,double value, double dv)
 	d = dv * pid->d;
 	pid->outp=p;
 	pid->outi=RangeValue(i,-300,+300);
-	pid->outd=RangeValue(d,-300,+300);
-	pid->out =RangeValue(p + i + d,-400,+400);
+	pid->outd=RangeValue(d,-500,+500);
+	pid->out =RangeValue(p + i + d,-800,+800);
 	pid->ldv=dv;
 	pid->lv=value;
 	if (pid->out<10&&pid->out>-10)
@@ -44,5 +44,10 @@ void PID_Init(PID* pid,double p,double i,double d)
 	pid->d=d;
 	
 	PID_SetTarget(pid,0);
+	
+	pid->out = 0;
+	pid->iv = 0;
+	pid->dv=0;
+	pid->ldv=0;
 }
 	

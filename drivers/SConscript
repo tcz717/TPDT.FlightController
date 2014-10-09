@@ -21,6 +21,7 @@ PID.c
 PWM.c
 hardtimer.c
 l3g4200d.c
+settings.c
 """)
 
 # add Ethernet drivers.
