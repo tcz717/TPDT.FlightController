@@ -83,8 +83,6 @@ File 7,1,<..\..\components\finsh\symbol.c><symbol.c>
 File 8,1,<..\..\components\init\components.c><components.c>
 
 
-
-
 Options 1,0,0  // Target 'RT-Thread STM32'
  Device (STM32F103ZE)
  Vendor (STMicroelectronics)
@@ -168,8 +166,8 @@ Options 1,0,0  // Target 'RT-Thread STM32'
  ADSLDIF ()
  ADSLDDW ()
   OPTDL (SARMCM3.DLL)()(DARMSTM.DLL)(-pSTM32F103ZE)(SARMCM3.DLL)()(TARMSTM.DLL)(-pSTM32F103ZE)
-  OPTDBG 49142,7,()()()()()()()()()() (Segger\JL2CM3.dll)()()()
- FLASH1 { 1,0,0,0,1,0,0,0,6,16,0,0,0,0,0,0,0,0,0,0 }
+  OPTDBG 49142,6,()()()()()()()()()() (Segger\JL2CM3.dll)()()()
+ FLASH1 { 25,0,0,0,1,0,0,0,6,16,0,0,0,0,0,0,0,0,0,0 }
  FLASH2 (Segger\JL2CM3.dll)
  FLASH3 ("" ())
  FLASH4 ()
