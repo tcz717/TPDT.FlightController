@@ -41,11 +41,14 @@ struct setting_t
 	u16 yaw_min;
 	u16 yaw_mid;
 	u16 yaw_max;
+	
+	u8 pwm_init_mode;
 };
 
 extern struct setting_t settings;
 
 void get_pid(void);
 rt_err_t load_settings(struct setting_t * s,const char * path,PID * pitch,PID * roll);
+rt_err_t save_settings(struct setting_t * s,const char * path);
 
 #endif

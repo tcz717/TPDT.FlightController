@@ -4,6 +4,11 @@
 void LED_init(void)
 {
 	GPIO_InitTypeDef  initdef;
+	
+	PWR_BackupAccessCmd(ENABLE);
+	RCC_LSICmd(DISABLE);
+	BKP_TamperPinCmd(DISABLE);
+	
 	initdef.GPIO_Mode=GPIO_Mode_Out_PP;
 	initdef.GPIO_Speed=GPIO_Speed_50MHz;
 	initdef.GPIO_Pin=GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;

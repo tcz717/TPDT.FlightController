@@ -32,6 +32,7 @@
 
 #define AHRS_EVENT_MPU6050	1
 #define AHRS_EVENT_Update 	(1 << 7)
+#define AHRS_EVENT_WRONG 	(1 << 15)
 
 #define LED1(TIME) led_period[0]=(TIME)
 #define LED2(TIME) led_period[1]=(TIME)
@@ -307,6 +308,8 @@ void correct_thread_entry(void* parameter)
 	}
 }
 
+u8 en_out_ahrs=0;
+
 void ahrs_thread_entry(void* parameter)
 {
 	rt_uint32_t e;
@@ -320,20 +323,21 @@ void ahrs_thread_entry(void* parameter)
 		rt_sem_release(&mpu6050_sem);
 //		rt_sem_release(&l3g4200d_sem);
 		
-		if(rt_event_recv(&ahrs_event,1,
-						RT_EVENT_FLAG_AND|RT_EVENT_FLAG_CLEAR,
-						2,&e)==RT_EOK)
+		if(rt_event_recv(&ahrs_event,AHRS_EVENT_MPU6050|AHRS_EVENT_WRONG,
+						RT_EVENT_FLAG_OR|RT_EVENT_FLAG_CLEAR,
+						2,&e)==RT_EOK&&(e&AHRS_EVENT_WRONG)==0)
 		{
 			LED4(2);
 			
 			ahrs_update();
 			last_ahrs=rt_tick_get();
 			
-			debug("%d,%d,%d		%d\n",
-			(s32)(ahrs.degree_pitch),
-			(s32)(ahrs.degree_roll),
-			(s32)(ahrs.degree_yaw	),
-			(u32)(1.0/ahrs.time_span));
+			if(en_out_ahrs)
+				rt_kprintf("%d,%d,%d		%d\n",
+				(s32)(ahrs.degree_pitch),
+				(s32)(ahrs.degree_roll),
+				(s32)(ahrs.degree_yaw	),
+				(u32)(1.0/ahrs.time_span));
 			rt_event_send(&ahrs_event,AHRS_EVENT_Update);
 		}
 		else
@@ -375,13 +379,14 @@ void mpu6050_thread_entry(void* parameter)
 			if(AccelGyro[1]!=AccelGyro[4]&&AccelGyro[2]!=AccelGyro[5])
 			{
 				ahrs_put_mpu6050(AccelGyro);
-				rt_event_send(&ahrs_event,1);
+				rt_event_send(&ahrs_event,AHRS_EVENT_MPU6050);
 			}
 			
 		}
 		else
 		{
 			debug("error:lost mpu6050.\n");
+			rt_event_send(&ahrs_event,AHRS_EVENT_WRONG);
 		}
 	}
 }
@@ -465,6 +470,20 @@ void rt_init_thread_entry(void* parameter)
 	settings.th_min	=1000;
 	settings.roll_max	=settings.pitch_max	=settings.yaw_max	=2000;
 	settings.th_max	=2000;
+	
+	if(settings.pwm_init_mode)
+	{
+		Motor_Set(1000,1000,1000,1000);
+		
+		rt_thread_delay(RT_TICK_PER_SECOND*5);
+		
+		Motor_Set(0,0,0,0);
+		
+		settings.pwm_init_mode=0;
+		save_settings(&settings,"/setting");
+		
+		rt_kprintf("pwm init finished!\n");
+	}
 	
 	get_pid();
 	

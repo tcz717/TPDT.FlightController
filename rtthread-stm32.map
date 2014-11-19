@@ -14,12 +14,34 @@ Removing Unused input sections from the image.
     Removing board.o(.revsh_text), (4 bytes).
     Removing stm32f10x_it.o(.rev16_text), (4 bytes).
     Removing stm32f10x_it.o(.revsh_text), (4 bytes).
-    Removing led.o(.rev16_text), (4 bytes).
-    Removing led.o(.revsh_text), (4 bytes).
+    Removing LED.o(.rev16_text), (4 bytes).
+    Removing LED.o(.revsh_text), (4 bytes).
     Removing usart.o(.rev16_text), (4 bytes).
     Removing usart.o(.revsh_text), (4 bytes).
     Removing i2c1.o(.rev16_text), (4 bytes).
     Removing i2c1.o(.revsh_text), (4 bytes).
+    Removing bmp085.o(.rev16_text), (4 bytes).
+    Removing bmp085.o(.revsh_text), (4 bytes).
+    Removing spi2.o(.rev16_text), (4 bytes).
+    Removing spi2.o(.revsh_text), (4 bytes).
+    Removing mpu6050.o(.rev16_text), (4 bytes).
+    Removing mpu6050.o(.revsh_text), (4 bytes).
+    Removing ahrs.o(.rev16_text), (4 bytes).
+    Removing ahrs.o(.revsh_text), (4 bytes).
+    Removing bluetooth.o(.rev16_text), (4 bytes).
+    Removing bluetooth.o(.revsh_text), (4 bytes).
+    Removing Motor.o(.rev16_text), (4 bytes).
+    Removing Motor.o(.revsh_text), (4 bytes).
+    Removing PWM.o(.rev16_text), (4 bytes).
+    Removing PWM.o(.revsh_text), (4 bytes).
+    Removing hardtimer.o(.rev16_text), (4 bytes).
+    Removing hardtimer.o(.revsh_text), (4 bytes).
+    Removing l3g4200d.o(.rev16_text), (4 bytes).
+    Removing l3g4200d.o(.revsh_text), (4 bytes).
+    Removing settings.o(.rev16_text), (4 bytes).
+    Removing settings.o(.revsh_text), (4 bytes).
+    Removing sdcard.o(.rev16_text), (4 bytes).
+    Removing sdcard.o(.revsh_text), (4 bytes).
     Removing system_stm32f10x.o(.rev16_text), (4 bytes).
     Removing system_stm32f10x.o(.revsh_text), (4 bytes).
     Removing stm32f10x_crc.o(.rev16_text), (4 bytes).
@@ -35,7 +57,6 @@ Removing Unused input sections from the image.
     Removing stm32f10x_pwr.o(.text), (452 bytes).
     Removing stm32f10x_exti.o(.rev16_text), (4 bytes).
     Removing stm32f10x_exti.o(.revsh_text), (4 bytes).
-    Removing stm32f10x_exti.o(.text), (740 bytes).
     Removing stm32f10x_bkp.o(.rev16_text), (4 bytes).
     Removing stm32f10x_bkp.o(.revsh_text), (4 bytes).
     Removing stm32f10x_bkp.o(.text), (724 bytes).
@@ -55,19 +76,16 @@ Removing Unused input sections from the image.
     Removing stm32f10x_fsmc.o(.text), (3496 bytes).
     Removing stm32f10x_tim.o(.rev16_text), (4 bytes).
     Removing stm32f10x_tim.o(.revsh_text), (4 bytes).
-    Removing stm32f10x_tim.o(.text), (14204 bytes).
     Removing stm32f10x_iwdg.o(.rev16_text), (4 bytes).
     Removing stm32f10x_iwdg.o(.revsh_text), (4 bytes).
     Removing stm32f10x_iwdg.o(.text), (228 bytes).
     Removing stm32f10x_spi.o(.rev16_text), (4 bytes).
     Removing stm32f10x_spi.o(.revsh_text), (4 bytes).
-    Removing stm32f10x_spi.o(.text), (2444 bytes).
     Removing stm32f10x_flash.o(.rev16_text), (4 bytes).
     Removing stm32f10x_flash.o(.revsh_text), (4 bytes).
     Removing stm32f10x_flash.o(.text), (1940 bytes).
     Removing stm32f10x_sdio.o(.rev16_text), (4 bytes).
     Removing stm32f10x_sdio.o(.revsh_text), (4 bytes).
-    Removing stm32f10x_sdio.o(.text), (1616 bytes).
     Removing stm32f10x_gpio.o(.rev16_text), (4 bytes).
     Removing stm32f10x_gpio.o(.revsh_text), (4 bytes).
     Removing stm32f10x_usart.o(.rev16_text), (4 bytes).
@@ -92,10 +110,6 @@ Removing Unused input sections from the image.
     Removing div0.o(.text), (4 bytes).
     Removing showmem.o(.text), (164 bytes).
     Removing showmem.o(.constdata), (18 bytes).
-    Removing spi_core.o(.text), (1900 bytes).
-    Removing spi_core.o(.constdata), (163 bytes).
-    Removing spi_dev.o(.text), (920 bytes).
-    Removing spi_dev.o(.constdata), (217 bytes).
     Removing pipe.o(.text), (1328 bytes).
     Removing pipe.o(.constdata), (86 bytes).
     Removing portal.o(.text), (884 bytes).
@@ -105,7 +119,7 @@ Removing Unused input sections from the image.
     Removing workqueue.o(.text), (540 bytes).
     Removing workqueue.o(.constdata), (90 bytes).
 
-98 unused section(s) (total 46276 bytes) removed from the image.
+112 unused section(s) (total 24160 bytes) removed from the image.
 
 ==============================================================================
 
@@ -114,16 +128,29 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       168         56          0          0        640     264322   application.o
-       152         22          0          0          0      22961   board.o
+       140         14          0          0          0        979   LED.o
+       372          8          0          0          0       1315   Motor.o
+       476         34          0          0          0       1755   PID.o
+      1848         80          0         40         32       3299   PWM.o
+      3132        180         69         36       3248       5841   ahrs.o
+      3580        650          0         16       4064     324968   application.o
+      1000        130        120          0         84       3707   bluetooth.o
+      1148        194         39         28         32       3985   bmp085.o
+       168         22          0          0          0      23510   board.o
        100          6          0          4          0       1352   clock.o
       3012       1244       1085          4          0      10323   cmd.o
        584        158         57          0          0       3051   completion.o
         64         12         12          0          0       1646   components.o
-       240         26          0          0          0        800   context_rvds.o
+       240         26          0          0          0        780   context_rvds.o
       1540        750         19         16          0       3823   cpuport.o
-      1220        144         75          0          0       6569   dataqueue.o
+      1220        144         75          0          0       6605   dataqueue.o
       1008        166        168          0          0       4933   device.o
+      1020        160         39          0        212       8999   dfs.o
+      2912        262        261          8          0      17378   dfs_elm.o
+      2504        358        143          0        292       8699   dfs_file.o
+      1604        292        116          0          0       5728   dfs_fs.o
+      1376         48         37          0          0       7143   dfs_posix.o
+     10568        118         44         10          0      24825   ff.o
       6168        154          0          8          0      10634   finsh_compiler.o
         44         10        243         64          0       1581   finsh_error.o
        528         18          0          8        128       3319   finsh_heap.o
@@ -134,38 +161,50 @@ Image component sizes
       1624         16        126          0          0       5884   finsh_token.o
        412         18          0          4        192       7105   finsh_var.o
        228         34          0         12        384       6766   finsh_vm.o
-      1084         76         12          0        184       4558   i2c1.o
-       424         88         23          0         36       3088   i2c_core.o
-       580        106        114          0          0       2796   i2c_dev.o
+       108         10          0          0          0        648   hardtimer.o
+      2308        196         92          4        220       6723   i2c1.o
+       632        214         23          0         36       3132   i2c_core.o
+       668        174        114          0          0       2804   i2c_dev.o
        360        104         22          4        384       2771   idle.o
       6904        466        471          0          0      21199   ipc.o
         72          6          0          1          0       1282   irq.o
       2512        168        290          8        128      10728   kservice.o
-       236         10         48          1          0       1929   led.o
+       524        104         43          4         32       3346   l3g4200d.o
       2484        592        358         32         32       5763   mem.o
-       484         72          0          0          0       2025   misc.o
+       484         72          0          0          0       2005   misc.o
+       852         84         41          4          0       5647   mpu6050.o
        864        180         94        164          0       5712   object.o
        820        180         78         28        256       4665   scheduler.o
+      9976        664         22         40        804      28071   sdcard.o
       2748        392        211          0          0       8249   serial.o
+      4592       1438        273          0        128       7915   settings.o
       2580        306        100          4       2176       5243   shell.o
+       424         56          8          4        184       2437   spi2.o
+      1900        144        163          0          0       6006   spi_core.o
+       920        204        217          0          0       4319   spi_dev.o
+      1572        474         39          0        116       7784   spi_flash_w25qxx.o
        176         88          0          0          0       1191   startup.o
-        64         26        304          0       1536        884   startup_stm32f10x_hd.o
-      2372        176          0          0          0       5494   stm32f10x_dma.o
-      2688        210          0          0          0       7073   stm32f10x_gpio.o
-      3244        190          0          0          0      10795   stm32f10x_i2c.o
+        64         26        304          0       1536        876   startup_stm32f10x_hd.o
+      2372        176          0          0          0       5470   stm32f10x_dma.o
+       740         70          0          0          0       2619   stm32f10x_exti.o
+      2688        210          0          0          0       7057   stm32f10x_gpio.o
+      3244        190          0          0          0      10771   stm32f10x_i2c.o
         18          0          0          0          0        889   stm32f10x_it.o
-      2116        112          0         20          0      10008   stm32f10x_rcc.o
-      3520        146          0          0          0      10164   stm32f10x_usart.o
+      2116        112          0         20          0       9972   stm32f10x_rcc.o
+      1616         92          0          0          0       8088   stm32f10x_sdio.o
+      2444        102          0          0          0       7790   stm32f10x_spi.o
+     14204        840          0          0          0      29712   stm32f10x_tim.o
+      3520        146          0          0          0      10140   stm32f10x_usart.o
          0          0          0         16          0       4125   symbol.o
-       480         38          0         20          0     248171   system_stm32f10x.o
+       480         38          0         20          0       1943   system_stm32f10x.o
       1716        246        170          0          0       7722   thread.o
       1296        138         92         16          0       6751   timer.o
        752        118         80          8         84      25644   usart.o
 
     ----------------------------------------------------------------------
-     63368       7146       4492        448       6480     796885   Object Totals
+    136052      14204       6208        640      15108     820039   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         2          0         12          6          0          0   (incl. Padding)
+         2          0         22          5          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -176,6 +215,8 @@ Image component sizes
         52          8          0          0          0          0   __scatter.o
         28          0          0          0          0          0   __scatter_zi.o
         28          0          0          0          0         68   _chval.o
+         0          0         12          0          0          0   _monlen.o
+        22          0          0          0          0        100   _rserrno.o
        158          0          0          0          0         92   _strtoul.o
         26          0          0          0          0         80   atoi.o
         12          0          0          0          0         72   exit.o
@@ -187,6 +228,7 @@ Image component sizes
          2          0          0          0          0          0   libshutdown.o
          2          0          0          0          0          0   libshutdown2.o
          8          4          0          0         96         68   libspace.o
+       420         10          0          0          0        128   mktime.o
         16          4          0          0          0         76   rt_ctype_table.o
          8          4          0          0          0         68   rt_errno_addr_intlibspace.o
          8          4          0          0          0         68   rt_locale_intlibspace.o
@@ -203,23 +245,71 @@ Image component sizes
         62          0          0          0          0         76   strlen.o
        150          0          0          0          0         80   strncmp.o
         86          0          0          0          0         76   strncpy.o
+        22          0          0          0          0         68   strrchr.o
        112          0          0          0          0         88   strtol.o
         12          4          0          0          0         68   sys_exit.o
         74          0          0          0          0         80   sys_stackheap_outer.o
          2          0          0          0          0         68   use_no_semi.o
+        98          4          0          0          0         92   d2f.o
+       826         16          0          0          0        348   daddsub_clz.o
+        16          4          0          0          0         68   dcheck1.o
+        24          0          0          0          0         68   dcmpi.o
+       688        140          0          0          0        208   ddiv.o
+        94          4          0          0          0         92   dfix.o
+        90          4          0          0          0         92   dfixu.o
+        84          0          0          0          0        136   dflt_clz.o
+       120          4          0          0          0         92   dleqf.o
+       340         12          0          0          0        104   dmul.o
+       156          4          0          0          0         92   dnaninf.o
+        12          0          0          0          0         68   dretinf.o
+       108          0          0          0          0         80   drleqf.o
+       460         56          0          0          0        120   dsqrt_noumaal.o
+        86          4          0          0          0         84   f2d.o
+       450          8          0          0          0        236   faddsub_clz.o
+        12          4          0          0          0         68   fcheck1.o
+       388         76          0          0          0         96   fdiv.o
+       258          4          0          0          0         84   fmul.o
+       140          4          0          0          0         84   fnaninf.o
+        10          0          0          0          0         68   fretinf.o
+       272        100          0          0          0         88   fsqrt.o
+       100          0          0          0          0         68   retnan.o
+        92          0          0          0          0         68   scalbn.o
+        76          0          0          0          0         68   scalbnf.o
+        48          0          0          0          0         68   trapv.o
+         0          0          0          0          0          0   usenofp.o
+       296         36          0          0          0        120   asinf.o
+       548         70        152          0          0        124   atan.o
+       384         38          0          0          0        144   atan2.o
+       604         76          0          0          0        116   atan2f.o
+       172          8          0          0          0        112   cos.o
+       252         22         48          0          0        124   cos_i.o
+        16          6          0          0          0         68   dunder.o
+        40          0          0          0          0         68   fpclassify.o
+        38          0          0          0          0         68   fpclassifyf.o
+        10          0          0          0          0         68   funder.o
+       170          0          0          0          0         96   poly.o
+      2528        190        136          0          0        332   pow.o
+         0          0          8          0          0          0   qnan.o
+       904         74        200          0          0        140   rred.o
+       176         10          0          0          0        116   sin.o
+       236         12         40          0          0        128   sin_i.o
+        76          0          0          0          0         84   sqrt.o
+        44          0          0          0          0         80   sqrtf.o
 
     ----------------------------------------------------------------------
-      1564         38        272          0         96       1788   Library Totals
-         6          0          0          0          0          0   (incl. Padding)
+     13588       1038        872          0        100       6812   Library Totals
+        24          0          4          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
 
-      1558         38        272          0         96       1788   c_w.l
+      2022         48        284          0         96       2084   c_w.l
+      5048        448          0          0          0       2740   fz_ws.l
+      6494        542        584          0          0       1988   m_ws.l
 
     ----------------------------------------------------------------------
-      1564         38        272          0         96       1788   Library Totals
+     13588       1038        872          0        100       6812   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -228,15 +318,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     64932       7184       4764        448       6576     794093   Grand Totals
-     64932       7184       4764        160       6576     794093   ELF Image Totals (compressed)
-     64932       7184       4764        160          0          0   ROM Totals
+    149640      15242       7080        640      15208     817695   Grand Totals
+    149640      15242       7080        172      15208     817695   ELF Image Totals (compressed)
+    149640      15242       7080        172          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                69696 (  68.06kB)
-    Total RW  Size (RW Data + ZI Data)              7024 (   6.86kB)
-    Total ROM Size (Code + RO Data + RW Data)      69856 (  68.22kB)
+    Total RO  Size (Code + RO Data)               156720 ( 153.05kB)
+    Total RW  Size (RW Data + ZI Data)             15848 (  15.48kB)
+    Total ROM Size (Code + RO Data + RW Data)     156892 ( 153.21kB)
 
 ==============================================================================
 

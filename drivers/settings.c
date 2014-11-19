@@ -141,6 +141,24 @@ void set_roll(s16 p,s16 i,s16 d)
 }
 FINSH_FUNCTION_EXPORT(set_roll, set the value of pid in roll);
 
+void set_pwm()
+{
+	settings.pwm_init_mode=!settings.pwm_init_mode;
+	
+	save_settings(&settings,"/setting");
+	
+	if(settings.pwm_init_mode)
+		rt_kprintf("warning:after reset, we will set moter out full!\n");
+}
+FINSH_FUNCTION_EXPORT(set_pwm, set pwm to the same);
+
+extern u8 en_out_ahrs;
+void out_ahrs()
+{
+	en_out_ahrs=!en_out_ahrs;
+}
+FINSH_FUNCTION_EXPORT(out_ahrs, output the ahrs);
+
 void set_yaw(s16 p,s16 i,s16 d)
 {
 	PID_Init(&yaw_pid,p/10.0,i/100.0,d/10.0);
