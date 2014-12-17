@@ -462,7 +462,7 @@ void rt_init_thread_entry(void* parameter)
 	//default settings
 	PID_Init(&pitch_pid,3.2,0,1.2);
 	PID_Init(&roll_pid,3.2,0,1.2);
-	PID_Init(&yaw_pid,0,0,2);
+	PID_Init(&yaw_pid,0,0,0);
 	
 	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
 	
@@ -522,7 +522,7 @@ void rt_init_thread_entry(void* parameter)
 					RT_NULL,
                     control_stack,
 					512, 3, 2);
-    rt_thread_startup(&control_thread);
+    //rt_thread_startup(&control_thread);
 	
 	rt_thread_init(&correct_thread,
 					"correct",

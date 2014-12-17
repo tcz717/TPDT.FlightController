@@ -14,7 +14,7 @@
 #define I2Cx_SDA_GPIO_CLK     RCC_APB2Periph_GPIOB
 
 #define I2Cx_DR_ADDR          ((u32)&I2C1->DR)
-#define I2Cx_SPEED            ((u32)300000)
+#define I2Cx_SPEED            ((u32)250000)
 
 #define DMAx                  DMA1
 #define DMAx_CLK              RCC_AHB1Periph_DMA1
