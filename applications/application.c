@@ -115,7 +115,7 @@ void control_thread_entry(void* parameter)
 	while(1)
 	{
 		LED3(balence*2);
-		debug("i3:%d	i5:%d	o1:%d\n",PWM3_Time,PWM5_Time,throttle);
+		//rt_kprintf("i3:%d	i5:%d	o1:%d\n",PWM3_Time,PWM5_Time,throttle);
 		debug("p:%d	%d	r:%d	%d\n",(s16)pitch,(s16)pitch_pid.expect,(s16)roll,(s16)roll_pid.expect);
 		if(pwmcon)
 		{
@@ -166,6 +166,40 @@ void control_thread_entry(void* parameter)
 			//set pwm middle
 			if(!pwmcon)
 			{
+				rt_uint32_t e;
+				rt_uint16_t i;
+				rt_int16_t * mpu1, * mpu2, * mpu3;
+				rt_int16_t m1,m2,m3;
+				{
+					
+					rt_kprintf("start sensors correct\n");
+					
+					mpu1 = (rt_int16_t *)rt_calloc(255,sizeof(rt_int16_t));
+					mpu2 = (rt_int16_t *)rt_calloc(255,sizeof(rt_int16_t));
+					mpu3 = (rt_int16_t *)rt_calloc(255,sizeof(rt_int16_t));
+					
+					for(i=0;i<255;i++)
+					{
+						if(rt_event_recv(&ahrs_event,AHRS_EVENT_Update,
+							RT_EVENT_FLAG_AND|RT_EVENT_FLAG_CLEAR,
+							RT_WAITING_FOREVER,&e)==RT_EOK)
+						{
+							m1=MoveAve_SMA(mpu_gryo_pitch	, mpu1, 255);
+							m2=MoveAve_SMA(mpu_gryo_roll	, mpu2, 255);
+							m3=MoveAve_SMA(mpu_gryo_yaw		, mpu3, 255);
+						}
+					}
+					
+					MPU6050_Diff[0]-=m1; 
+					MPU6050_Diff[1]-=m2;
+					MPU6050_Diff[2]-=m3;
+					
+					rt_free(mpu1);
+					rt_free(mpu2);
+					rt_free(mpu3);
+					
+					rt_kprintf("sensor correct finish.\n");
+				}
 				settings.roll_mid	=PWM1_Time;
 				settings.pitch_mid	=PWM2_Time;
 				settings.yaw_mid	=PWM4_Time;
@@ -184,10 +218,10 @@ void control_thread_entry(void* parameter)
 				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
 				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
 				PID_Update(&yaw_pid		,ahrs.degree_yaw	,ahrs.gryo_yaw);
-				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out + yaw);
-				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out - yaw);
-				Motor_Set3(throttle + pitch_pid.out - roll_pid.out - yaw_pid.out - yaw);
-				Motor_Set4(throttle + pitch_pid.out + roll_pid.out + yaw_pid.out + yaw);
+				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out);
+				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out);
+				Motor_Set3(throttle + pitch_pid.out - roll_pid.out - yaw_pid.out);
+				Motor_Set4(throttle + pitch_pid.out + roll_pid.out + yaw_pid.out);
 				
 				debug( "m1:%d	m2:%d	m3:%d	m4:%d\n",
 				(u16)(throttle - pitch_pid.out + roll_pid.out),
@@ -224,7 +258,7 @@ void control_thread_entry(void* parameter)
 		else
 			LED_set2(0);
 		
-		rt_thread_delay(5);
+		rt_thread_delay(4);
 	}
 }
 
@@ -486,6 +520,7 @@ void rt_init_thread_entry(void* parameter)
 	}
 	
 	get_pid();
+	PID_Init(&yaw_pid,0,0,0);
 	
 	LED4(0);
 	
@@ -522,7 +557,7 @@ void rt_init_thread_entry(void* parameter)
 					RT_NULL,
                     control_stack,
 					512, 3, 2);
-    //rt_thread_startup(&control_thread);
+    rt_thread_startup(&control_thread);
 	
 	rt_thread_init(&correct_thread,
 					"correct",

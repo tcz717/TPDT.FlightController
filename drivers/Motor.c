@@ -16,19 +16,25 @@ void Motor_Set(u16 m1,u16 m2,u16 m3,u16 m4)
 	Motor_Set3(m3);
 	Motor_Set4(m4);
 }
+u16 m1,m2,m3,m4;
 void Motor_Set1(u16 m)
 {
+	m1=m;
 	TIM_SetCompare1(TIM3,MINOUT+((u32)RangeValue(m,0,1000))*MAXOUT/1000);
 }
 void Motor_Set2(u16 m)
 {
+	m2=m;
 	TIM_SetCompare2(TIM3,MINOUT+((u32)RangeValue(m,0,1000))*MAXOUT/1000);
 }
 void Motor_Set3(u16 m)
 {
+	m3=m;
 	TIM_SetCompare3(TIM3,MINOUT+((u32)RangeValue(m,0,1000))*MAXOUT/1000);
 }
 void Motor_Set4(u16 m)
 {
+	m4=m;
 	TIM_SetCompare4(TIM3,MINOUT+((u32)RangeValue(m,0,1000))*MAXOUT/1000);
 }
+

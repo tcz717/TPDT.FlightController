@@ -12,7 +12,7 @@ double PID_Update(PID* pid,double value, double dv)
 {
 	double p, i, d;
 	pid->iv += (value - pid->expect);
-	pid->iv=RangeValue(pid->iv,-300,+300);
+	pid->iv=RangeValue(pid->iv,-360,+360);
 	
 	p = (value - pid->expect) * pid->p;
 	i = pid->iv * pid->i;

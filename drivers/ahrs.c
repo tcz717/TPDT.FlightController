@@ -82,9 +82,9 @@ void Quaternion_ToAngE(Quaternion *pNumQ)
 	float NumQ_T23 = 2.0f * (pNumQ->q0 * pNumQ->q1 + pNumQ->q2 * pNumQ->q3);
 	float NumQ_T33 = pNumQ->q0 * pNumQ->q0 - pNumQ->q1 * pNumQ->q1 - pNumQ->q2 * pNumQ->q2 + pNumQ->q3 * pNumQ->q3;
 
-	ahrs.degree_pitch	=	-asinf(NumQ_T13);
-	ahrs.degree_roll	=	atan2f(NumQ_T23, NumQ_T33);
-	ahrs.degree_yaw		=	0;
+	ahrs.degree_roll	=	-asinf(NumQ_T13)* 180.0 / 3.14;
+	ahrs.degree_pitch	=	atan2f(NumQ_T23, NumQ_T33)* 180.0 / 3.14;
+	ahrs.degree_yaw		=	atan2f(NumQ_T12, NumQ_T11)* 180.0 / 3.14;
 //	pAngE->Yaw   = atan2f(NumQ_T12, NumQ_T11);
 }
 
@@ -124,7 +124,7 @@ rt_inline float toRad(float degree)
 
 //----------------------------------------------------------------------------------------------------
 // Definitions
-Quaternion curq;
+Quaternion curq={1.0,0.0,0.0,0.0};
 
 //#define USE_QUATERNION
 
@@ -133,8 +133,8 @@ Quaternion curq;
 #define q2 curq.q2
 #define q3 curq.q3
 
-#define Kp 15.0f                        // proportional gain governs rate of convergence to accelerometer/magnetometer
-#define Ki 0.02f                // integral gain governs rate of convergence of gyroscope biases
+#define Kp 20.0f                        // proportional gain governs rate of convergence to accelerometer/magnetometer
+#define Ki 0.04f                // integral gain governs rate of convergence of gyroscope biases
 #define halfT (dt / 2.0)                // half the sample period
 
 //---------------------------------------------------------------------------------------------------
@@ -218,11 +218,15 @@ void AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az/*, fl
         q3 = q3 / norm;
 }
 
+/// todo : reorganize ahrs code ----------------------
+double p,r;
+int cnt=0;
 void ahrs_update()
 {
 	double ax,ay;
-	const double a = 0.98;
+	const double a = 0.96;
 	const double gyroscale = MPU6050_GYRO_SCALE;
+	double tmp;
 	
 	dt = Timer4_GetSec();
 	
@@ -230,6 +234,7 @@ void ahrs_update()
 	ahrs.gryo_roll		= mpu_gryo_roll 	* gyroscale / 32767.0;
 	ahrs.gryo_yaw		= mpu_gryo_yaw 		* gyroscale / 32767.0;
 #ifndef USE_QUATERNION
+#ifdef MEASURE_ROTER
 	ax					= atan2(
 							mpu_acc_y,
 							sqrt(mpu_acc_x * mpu_acc_x +mpu_acc_z * mpu_acc_z)
@@ -241,6 +246,76 @@ void ahrs_update()
 	ahrs.degree_pitch	= a * (ahrs.degree_pitch  + ahrs.gryo_pitch * dt) + (1 - a) * ax;
 	ahrs.degree_roll	= a * (ahrs.degree_roll + ahrs.gryo_roll * dt) + (1 - a) * ay;
 	ahrs.degree_yaw		= ahrs.degree_yaw + ahrs.gryo_yaw * dt;
+#else
+	ax					= atan2(
+							mpu_acc_y,
+							sqrt(mpu_acc_x * mpu_acc_x +mpu_acc_z * mpu_acc_z)
+								)* 180.0 / 3.14;
+	ay					= -atan2(
+							mpu_acc_x,
+							sqrt(mpu_acc_y * mpu_acc_y + mpu_acc_z * mpu_acc_z)
+								) * 180.0 / 3.14;
+	p	= a * (ahrs.degree_pitch  + ahrs.gryo_pitch * dt) + (1 - a) * ax;
+	r	= a * (ahrs.degree_roll + ahrs.gryo_roll * dt) + (1 - a) * ay;
+	ahrs.degree_yaw		= ahrs.degree_yaw + ahrs.gryo_yaw * dt;
+{
+	    double norm;
+        double vx, vy, vz;
+        double ex, ey, ez;   
+		double az;
+        double gx, gy, gz;   
+	
+		ax =mpu_acc_x;
+		ay =mpu_acc_y;
+		az= mpu_acc_z;
+	
+		gx =ahrs.gryo_pitch* 3.14 / 180.0;
+		gy =ahrs.gryo_roll* 3.14 / 180.0;
+		gz= ahrs.gryo_yaw* 3.14 / 180.0;
+
+        // normalise the measurements
+        norm = sqrt(ax*ax + ay*ay + az*az);      
+        ax = ax / norm;
+        ay = ay / norm;
+        az = az / norm;      
+
+        // estimated direction of gravity
+        vx = 2*(q1*q3 - q0*q2);
+        vy = 2*(q0*q1 + q2*q3);
+        vz = q0*q0 - q1*q1 - q2*q2 + q3*q3;
+
+        // error is sum of cross product between reference direction of field and direction measured by sensor
+        ex = (ay*vz - az*vy);
+        ey = (az*vx - ax*vz);
+        ez = (ax*vy - ay*vx);
+
+        // integral error scaled integral gain
+        exInt = exInt + ex*Ki;
+        eyInt = eyInt + ey*Ki;
+        ezInt = ezInt + ez*Ki;
+
+        // adjusted gyroscope measurements
+        gx = gx + Kp*ex + exInt;
+        gy = gy + Kp*ey + eyInt;
+        gz = gz + Kp*ez + ezInt;
+
+        // integrate quaternion rate and normalise
+        q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
+        q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
+        q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
+        q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;  
+
+        // normalise quaternion
+        norm = sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+        q0 = q0 / norm;
+        q1 = q1 / norm;
+        q2 = q2 / norm;
+        q3 = q3 / norm;
+		
+		
+	Quaternion_ToAngE(&curq);
+}
+#endif
 #else
 	Quaternion_ToNumQ(&curq,ahrs.degree_pitch,ahrs.degree_roll,ahrs.degree_yaw);
 	
@@ -254,13 +329,43 @@ void ahrs_update()
 
 volatile int16_t MPU6050_ACC_FIFO[3][256] = {{0}};
 volatile int16_t MPU6050_GYR_FIFO[3][256] = {{0}};
-double MPU6050_Diff[6]={0};
+double MPU6050_Diff[6]={15,-35,40,0};
 void ahrs_put_mpu6050(s16 * data)
 {
-	mpu_gryo_pitch=(MoveAve_WMA(data[3], MPU6050_GYR_FIFO[0], 2)+MPU6050_Diff[0]);
-	mpu_gryo_roll=(MoveAve_WMA(data[4], MPU6050_GYR_FIFO[1], 2)+MPU6050_Diff[1]);
-	mpu_gryo_yaw=(MoveAve_WMA(data[5], MPU6050_GYR_FIFO[2], 2)+MPU6050_Diff[2]);
-	mpu_acc_x=MoveAve_WMA(data[0], MPU6050_ACC_FIFO[0], 2)+MPU6050_Diff[3];
-	mpu_acc_y=MoveAve_WMA(data[1], MPU6050_ACC_FIFO[1], 2)+MPU6050_Diff[4];
-	mpu_acc_z=MoveAve_WMA(data[2], MPU6050_ACC_FIFO[2], 2)+MPU6050_Diff[5];
+//	mpu_gryo_pitch=(MoveAve_WMA(data[3], MPU6050_GYR_FIFO[0], 5)+MPU6050_Diff[0]);
+//	mpu_gryo_roll=(MoveAve_WMA(data[4], MPU6050_GYR_FIFO[1], 5)+MPU6050_Diff[1]);
+//	mpu_gryo_yaw=(MoveAve_WMA(data[5], MPU6050_GYR_FIFO[2], 5)+MPU6050_Diff[2]);
+//	mpu_acc_x=MoveAve_WMA(data[0], MPU6050_ACC_FIFO[0], 2)+MPU6050_Diff[3];
+//	mpu_acc_y=MoveAve_WMA(data[1], MPU6050_ACC_FIFO[1], 2)+MPU6050_Diff[4];
+//	mpu_acc_z=MoveAve_WMA(data[2], MPU6050_ACC_FIFO[2], 2)+MPU6050_Diff[5];
+	
+	mpu_gryo_pitch=data[3]+MPU6050_Diff[0];
+	mpu_gryo_roll=data[4]+MPU6050_Diff[1];
+	mpu_gryo_yaw=data[5]+MPU6050_Diff[2];
+	mpu_acc_x=data[0]+MPU6050_Diff[3];
+	mpu_acc_y=data[1]+MPU6050_Diff[4];
+	mpu_acc_z=data[2]+MPU6050_Diff[5];
 }
+
+//float kalman_input_baro_altitude;  //卡尔曼滤波输入数据
+//float x_mid=0, x_last=0, p_mid=1, p_last=0, x_now =0 ,p_now = 1;
+//float Q=1,R=10;
+//float z_measure=0;
+//float kg=0;
+
+//void ahrs_put_bmp(double height)
+//{
+////	ahrs.height=ahrs.height*0.9+height*0.1;
+//	    //气压计高度  -- 分米单位
+//    kalman_input_baro_altitude = height;
+//    
+//    x_mid = x_last;    //x_last=x(k-1|k-1),x_mid=x(k|k-1)
+//    p_mid = p_last + Q;  //p_mid=p(k|k-1),p_last=p(k-1|k-1),Q=噪声
+//    kg = p_mid /(p_mid + R); //kg为kalman filter，R为噪声
+//    z_measure = kalman_input_baro_altitude    ;//测量值，输入是分米级别的
+//    x_now = x_mid + kg * (z_measure - x_mid);//估计出的最优值
+//    p_now = (1 - kg) * p_mid;//最优值对应的covariance
+//    p_last = p_now;  //更新covariance值
+//    x_last = x_now;  //更新系统状态值
+//    ahrs.height = x_now;
+//}
