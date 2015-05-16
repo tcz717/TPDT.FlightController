@@ -27,6 +27,28 @@ double PID_Update(PID* pid,double value, double dv)
 		pid->out=0;
 	return pid->out;
 }
+double PID_xUpdate(PID* pid,double value, double v)
+{
+	double p, i, d;
+	pid->dv=value-v;
+	//pid->dv=value-pid->last;
+	pid->iv += (value - pid->expect);
+	pid->iv=RangeValue(pid->iv,-300,+300);
+	
+	p = (value - pid->expect) * pid->p;
+	i = pid->iv * pid->i;
+	d = pid->dv * pid->d;
+
+	pid->outp=p;
+	pid->outi=RangeValue(i,-300,+300);
+	pid->outd=RangeValue(d,-500,+500);
+	pid->out =RangeValue(p + i + d,-800,+800);
+	pid->ldv=pid->dv;
+	pid->lv=value;
+//	if (pid->out<10&&pid->out>-10)
+//		pid->out=0;
+	return pid->out;
+}
 double RangeValue(double value,double min,double max)
 {
 	if (value >= max)

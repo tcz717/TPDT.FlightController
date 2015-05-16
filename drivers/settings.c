@@ -45,9 +45,9 @@ rt_err_t load_settings(struct setting_t * s,const char * path,PID * pitch,PID * 
 			roll->d		= s->roll_d;
 			
 			
-			MPU6050_Diff[3]=settings.mpu6050_acc_diff[0];
-			MPU6050_Diff[4]=settings.mpu6050_acc_diff[1];
-			MPU6050_Diff[5]=settings.mpu6050_acc_diff[2];
+			MPU6050_Diff[3]=settings.mpu6050_acc_diffx;
+			MPU6050_Diff[4]=settings.mpu6050_acc_diffy;
+			MPU6050_Diff[5]=settings.mpu6050_acc_diffz;
 			
 			rt_kprintf("settings load succeed.\n");
 		}

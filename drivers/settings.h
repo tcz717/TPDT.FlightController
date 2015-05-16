@@ -25,7 +25,9 @@ struct setting_t
 	double yaw_i;
 	double yaw_d;
 	
-	double mpu6050_acc_diff[3];
+	double mpu6050_acc_diffx;
+	double mpu6050_acc_diffy;
+	double mpu6050_acc_diffz;
 	
 	u16 roll_min;
 	u16 roll_mid;

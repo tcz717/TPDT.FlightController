@@ -25,6 +25,7 @@ extern PID pitch_pid,roll_pid,yaw_pid;
 
 void PID_SetTarget(PID*,double value);
 double PID_Update(PID*,double value, double dv);
+double PID_xUpdate(PID* pid,double value, double v);
 double RangeValue(double value,double min,double max);
 void PID_Init(PID*,double p,double i,double d);
 

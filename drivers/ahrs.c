@@ -133,8 +133,8 @@ Quaternion curq={1.0,0.0,0.0,0.0};
 #define q2 curq.q2
 #define q3 curq.q3
 
-#define Kp 20.0f                        // proportional gain governs rate of convergence to accelerometer/magnetometer
-#define Ki 0.04f                // integral gain governs rate of convergence of gyroscope biases
+#define Kp 15.0f                        // proportional gain governs rate of convergence to accelerometer/magnetometer
+#define Ki 0.02f                // integral gain governs rate of convergence of gyroscope biases
 #define halfT (dt / 2.0)                // half the sample period
 
 //---------------------------------------------------------------------------------------------------

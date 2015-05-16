@@ -325,9 +325,9 @@ void correct_thread_entry(void* parameter)
 			}
 		}
 		
-		settings.mpu6050_acc_diff[0]=MPU6050_Diff[3]=-m1;
-		settings.mpu6050_acc_diff[1]=MPU6050_Diff[4]=-m2;
-		settings.mpu6050_acc_diff[2]=MPU6050_Diff[5]=-m3 + HALF_SIGNED16 / MPU6050_ACC_SCALE;
+		settings.mpu6050_acc_diffx=MPU6050_Diff[3]=-m1;
+		settings.mpu6050_acc_diffy=MPU6050_Diff[4]=-m2;
+		settings.mpu6050_acc_diffz=MPU6050_Diff[5]=-m3 + HALF_SIGNED16 / MPU6050_ACC_SCALE;
 		
 		rt_free(mpu1);
 		rt_free(mpu2);
@@ -496,7 +496,7 @@ void rt_init_thread_entry(void* parameter)
 	//default settings
 	PID_Init(&pitch_pid,3.2,0,1.2);
 	PID_Init(&roll_pid,3.2,0,1.2);
-	PID_Init(&yaw_pid,0,0,0);
+	PID_Init(&yaw_pid,0,0,1);
 	
 	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
 	
@@ -520,7 +520,7 @@ void rt_init_thread_entry(void* parameter)
 	}
 	
 	get_pid();
-	PID_Init(&yaw_pid,0,0,0);
+	//PID_Init(&yaw_pid,0,0,0);
 	
 	LED4(0);
 	
