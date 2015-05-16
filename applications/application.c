@@ -95,10 +95,13 @@ void led_thread_entry(void* parameter)
 u8 balence=0;
 u8 pwmcon=0;
 PID pitch_pid,roll_pid,yaw_pid;
+PID pout_pid,rout_pid;
 s16 pitch_ctl[16],roll_ctl[16],yaw_ctl[16];
 
 rt_bool_t lost_ahrs=RT_FALSE;
 rt_tick_t last_ahrs;
+double p_lp=0,r_lp=0;
+#define LP_A 0.7
 void control_thread_entry(void* parameter)
 {
 	u16 throttle=0;
@@ -109,6 +112,11 @@ void control_thread_entry(void* parameter)
 	pitch_pid.expect=0;
 	roll_pid.expect=0;
 	yaw_pid.expect=0;
+	
+	pout_pid.expect=0;
+	pout_pid.p=2.5;
+	rout_pid.expect=0;
+	rout_pid.p=2.5;
 	
 	rt_kprintf("start control\n");
 	
@@ -128,24 +136,24 @@ void control_thread_entry(void* parameter)
 			{
 				roll	=MoveAve_WMA(PWM1_Time,roll_ctl,16)		-	settings.roll_mid;
 				if(roll>5)
-					PID_SetTarget(&roll_pid,-roll/(double)(settings.roll_max	-	settings.roll_mid)*45.0);
+					PID_SetTarget(&rout_pid,-roll/(double)(settings.roll_max	-	settings.roll_mid)*45.0);
 				else if(roll<-5)
-					PID_SetTarget(&roll_pid,-roll
+					PID_SetTarget(&rout_pid,-roll
 											/(double)(settings.roll_mid	-	settings.roll_min)*45.0);
 				else
-					roll=0;
+					PID_SetTarget(&rout_pid,0);
 			}
 			if(PWM2_Time<=settings.pitch_max&&PWM2_Time>=settings.pitch_min)
 			{
 				pitch	=MoveAve_WMA(PWM2_Time,pitch_ctl,16)	-	settings.pitch_mid;
 				if(pitch>5)
-					PID_SetTarget(&pitch_pid,-pitch
-											/(double)(settings.pitch_max	-	settings.pitch_mid)*45.0);
+					PID_SetTarget(&pout_pid,-pitch
+											/(double)(settings.pitch_max	-	settings.pitch_mid)*30.0);
 				else if(pitch<-5)
-					PID_SetTarget(&pitch_pid,-pitch
-										/(double)(settings.pitch_mid	-	settings.pitch_min)*45.0);
+					PID_SetTarget(&pout_pid,-pitch
+										/(double)(settings.pitch_mid	-	settings.pitch_min)*30.0);
 				else 
-					pitch=0;
+					PID_SetTarget(&pout_pid,0);
 			}	
 			if(PWM4_Time<=settings.yaw_max&&PWM4_Time>=settings.yaw_min)
 			{
@@ -213,11 +221,23 @@ void control_thread_entry(void* parameter)
 		
 		if(balence)
 		{
-			if(throttle>30)
+			if(throttle>30&&abs(ahrs.degree_pitch)<30&&abs(ahrs.degree_roll)<30)
 			{
-				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
-				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
+				
+				PID_xUpdate(&pout_pid	,ahrs.degree_pitch,ahrs.degree_pitch);
+				PID_SetTarget(&pitch_pid,-RangeValue(pout_pid.out,-80,80));
+				PID_xUpdate(&pitch_pid	,ahrs.gryo_pitch,p_lp);
+				
+				PID_xUpdate(&rout_pid	,ahrs.degree_roll,ahrs.degree_roll);
+				PID_SetTarget(&roll_pid,-RangeValue(rout_pid.out,-80,80));
+				PID_xUpdate(&roll_pid	,ahrs.gryo_roll,r_lp);
+//				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
+//				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
 				PID_Update(&yaw_pid		,ahrs.degree_yaw	,ahrs.gryo_yaw);
+				
+				p_lp=LP_A*p_lp+(1.0-LP_A)*ahrs.gryo_pitch;
+				r_lp=LP_A*r_lp+(1.0-LP_A)*ahrs.gryo_roll;
+				
 				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out);
 				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out);
 				Motor_Set3(throttle + pitch_pid.out - roll_pid.out - yaw_pid.out);
@@ -496,7 +516,7 @@ void rt_init_thread_entry(void* parameter)
 	//default settings
 	PID_Init(&pitch_pid,3.2,0,1.2);
 	PID_Init(&roll_pid,3.2,0,1.2);
-	PID_Init(&yaw_pid,0,0,1);
+	PID_Init(&yaw_pid,0,0,2.5);
 	
 	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
 	
