@@ -490,11 +490,6 @@
               <FilePath>drivers\hardtimer.c</FilePath>
             </File>
             <File>
-              <FileName>l3g4200d.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>drivers\l3g4200d.c</FilePath>
-            </File>
-            <File>
               <FileName>sdcard.c</FileName>
               <FileType>1</FileType>
               <FilePath>drivers\sdcard.c</FilePath>

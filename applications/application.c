@@ -7,7 +7,6 @@
 #include "spi2.h"
 #include "bmp085.h"
 #include "MPU6050.h"
-#include "l3g4200d.h"
 #include "ahrs.h"  
 #include "LED.h"
 #include "Motor.h"
@@ -61,11 +60,6 @@ static rt_uint8_t mpu6050_stack[ 512 ];
 static struct rt_thread mpu6050_thread;
 static struct rt_semaphore mpu6050_sem;
 
-ALIGN(RT_ALIGN_SIZE)
-static rt_uint8_t l3g4200d_stack[ 512 ];
-static struct rt_thread l3g4200d_thread;
-static struct rt_semaphore l3g4200d_sem;
-
 u8 led_period[4];
 void led_thread_entry(void* parameter)
 {
@@ -100,8 +94,6 @@ s16 pitch_ctl[16],roll_ctl[16],yaw_ctl[16];
 
 rt_bool_t lost_ahrs=RT_FALSE;
 rt_tick_t last_ahrs;
-double p_lp=0,r_lp=0;
-#define LP_A 0.7
 void control_thread_entry(void* parameter)
 {
 	u16 throttle=0;
@@ -114,9 +106,7 @@ void control_thread_entry(void* parameter)
 	yaw_pid.expect=0;
 	
 	pout_pid.expect=0;
-	pout_pid.p=2.5;
 	rout_pid.expect=0;
-	rout_pid.p=2.5;
 	
 	rt_kprintf("start control\n");
 	
@@ -224,19 +214,16 @@ void control_thread_entry(void* parameter)
 			if(throttle>30&&abs(ahrs.degree_pitch)<30&&abs(ahrs.degree_roll)<30)
 			{
 				
-				PID_xUpdate(&pout_pid	,ahrs.degree_pitch,ahrs.degree_pitch);
+				PID_xUpdate(&pout_pid	,ahrs.degree_pitch);
 				PID_SetTarget(&pitch_pid,-RangeValue(pout_pid.out,-80,80));
-				PID_xUpdate(&pitch_pid	,ahrs.gryo_pitch,p_lp);
+				PID_xUpdate(&pitch_pid	,ahrs.gryo_pitch);
 				
-				PID_xUpdate(&rout_pid	,ahrs.degree_roll,ahrs.degree_roll);
+				PID_xUpdate(&rout_pid	,ahrs.degree_roll);
 				PID_SetTarget(&roll_pid,-RangeValue(rout_pid.out,-80,80));
-				PID_xUpdate(&roll_pid	,ahrs.gryo_roll,r_lp);
+				PID_xUpdate(&roll_pid	,ahrs.gryo_roll);
 //				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
 //				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
 				PID_Update(&yaw_pid		,ahrs.degree_yaw	,ahrs.gryo_yaw);
-				
-				p_lp=LP_A*p_lp+(1.0-LP_A)*ahrs.gryo_pitch;
-				r_lp=LP_A*r_lp+(1.0-LP_A)*ahrs.gryo_roll;
 				
 				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out);
 				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out);
@@ -375,7 +362,6 @@ void ahrs_thread_entry(void* parameter)
 	while(1)
 	{
 		rt_sem_release(&mpu6050_sem);
-//		rt_sem_release(&l3g4200d_sem);
 		
 		if(rt_event_recv(&ahrs_event,AHRS_EVENT_MPU6050|AHRS_EVENT_WRONG,
 						RT_EVENT_FLAG_OR|RT_EVENT_FLAG_CLEAR,
@@ -445,28 +431,6 @@ void mpu6050_thread_entry(void* parameter)
 	}
 }
 
-void l3g4200d_thread_entry(void* parameter)
-{
-	struct l3g4200d_data data;
-	rt_sem_init(&l3g4200d_sem,"l3g_t",0,RT_IPC_FLAG_FIFO);		
-	
-	rt_kprintf("start l3g4200d\n");
-	
-	while(1)
-	{
-		rt_sem_take(&l3g4200d_sem,RT_WAITING_FOREVER);
-		if( l3g4200d_TestConnection())
-		{
-			l3g4200d_read(&data);
-			debug("\t%d\t%d\t%d\n",data.x,data.y,data.z);
-		}
-		else
-		{
-			debug("error:lost l3g4200d.\n");
-		}
-	}
-}
-
 void rt_init_thread_entry(void* parameter)
 {
     rt_components_init();
@@ -491,16 +455,6 @@ void rt_init_thread_entry(void* parameter)
 	
 	mpu6050_init("i2c1");
 //	bmp085_init("i2c1");
-//	l3g4200d_init("i2c1");
-//	while(1)
-//		if( l3g4200d_TestConnection())
-//		{
-//			struct l3g4200d_data data;
-//			l3g4200d_read(&data);
-//			debug("\t%d\t%d\t%d\n",data.x,data.y,data.z);
-//		}
-//		else
-//			debug("retry\n");
 	
 	rt_kprintf("device init succeed\n");
 	
@@ -517,6 +471,8 @@ void rt_init_thread_entry(void* parameter)
 	PID_Init(&pitch_pid,3.2,0,1.2);
 	PID_Init(&roll_pid,3.2,0,1.2);
 	PID_Init(&yaw_pid,0,0,2.5);
+	PID_Init(&pout_pid,2.5,0,0);
+	PID_Init(&rout_pid,2.5,0,0);
 	
 	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
 	
@@ -540,7 +496,13 @@ void rt_init_thread_entry(void* parameter)
 	}
 	
 	get_pid();
-	//PID_Init(&yaw_pid,0,0,0);
+	PID_Set_Filt_Alpha(&pitch_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&roll_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&yaw_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&pout_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&rout_pid,1.0/125.0,20.0);
+	pitch_pid.d/=10;
+	roll_pid.d/=10;
 	
 	LED4(0);
 	
@@ -553,15 +515,6 @@ void rt_init_thread_entry(void* parameter)
                     mpu6050_stack,
 					512, 8, 10);
     rt_thread_startup(&mpu6050_thread);
-	
-	
-	rt_thread_init(&l3g4200d_thread,
-					"l3g4200d",
-					l3g4200d_thread_entry,
-					RT_NULL,
-                    l3g4200d_stack,
-					512, 8, 10);
-    //rt_thread_startup(&l3g4200d_thread);
 	
 	rt_thread_init(&ahrs_thread,
 					"ahrs",
