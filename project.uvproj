@@ -361,7 +361,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.;..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include;..\..\rtt\rt-thread-2.0.0_beta\components\dfs;..\..\rtt\rt-thread-2.0.0_beta\components\dfs\include;..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include;..\..\rtt\rt-thread-2.0.0_beta\components\finsh;..\..\rtt\rt-thread-2.0.0_beta\components\init;..\..\rtt\rt-thread-2.0.0_beta\include;..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common;..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3;Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;Libraries\STM32F10x_StdPeriph_Driver\inc;applications;drivers</IncludePath>
+              <IncludePath>.;..\..\rtt\rt-thread-2.0.0_beta\components\CMSIS\Include;..\..\rtt\rt-thread-2.0.0_beta\components\dfs;..\..\rtt\rt-thread-2.0.0_beta\components\dfs\include;..\..\rtt\rt-thread-2.0.0_beta\components\drivers\include;..\..\rtt\rt-thread-2.0.0_beta\components\finsh;..\..\rtt\rt-thread-2.0.0_beta\components\init;..\..\rtt\rt-thread-2.0.0_beta\include;..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\common;..\..\rtt\rt-thread-2.0.0_beta\libcpu\arm\cortex-m3;Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;Libraries\STM32F10x_StdPeriph_Driver\inc;applications;drivers;.\drivers\eMPL</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -490,11 +490,6 @@
               <FilePath>drivers\hardtimer.c</FilePath>
             </File>
             <File>
-              <FileName>l3g4200d.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>drivers\l3g4200d.c</FilePath>
-            </File>
-            <File>
               <FileName>sdcard.c</FileName>
               <FileType>1</FileType>
               <FilePath>drivers\sdcard.c</FilePath>
@@ -503,6 +498,21 @@
               <FileName>settings.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\drivers\settings.c</FilePath>
+            </File>
+            <File>
+              <FileName>inv_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\eMPL\inv_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\eMPL\inv_mpu_dmp_motion_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32_iic.c</FilePath>
             </File>
           </Files>
         </Group>

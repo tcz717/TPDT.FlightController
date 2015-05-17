@@ -9,8 +9,7 @@ typedef struct
 	double p;
 	double i;
 	double d;
-	double ldv;
-	double lv;
+	double input;
 	double expect;
 	double out;
 	double outp;
@@ -18,6 +17,8 @@ typedef struct
 	double outd;
 	double iv;
 	double dv;
+	double filt_alpha;
+	double dt;
 }PID;
 
 
@@ -25,8 +26,9 @@ extern PID pitch_pid,roll_pid,yaw_pid;
 
 void PID_SetTarget(PID*,double value);
 double PID_Update(PID*,double value, double dv);
-double PID_xUpdate(PID* pid,double value, double v);
+double PID_xUpdate(PID* pid,double value);
 double RangeValue(double value,double min,double max);
 void PID_Init(PID*,double p,double i,double d);
+void PID_Set_Filt_Alpha(PID* pid,double dt,double filt_hz);
 
 #endif

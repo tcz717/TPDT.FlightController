@@ -3,17 +3,20 @@
 
 #include <components.h>
 
-#include "i2c1.h"
+//#include "i2c1.h"
 #include "spi2.h"
 #include "bmp085.h"
-#include "MPU6050.h"
-#include "l3g4200d.h"
+//#include "MPU6050.h"
 #include "ahrs.h"  
 #include "LED.h"
 #include "Motor.h"
 #include "hardtimer.h"
 #include "PID.h"
 #include "settings.h"
+#include "stm32_iic.h"
+#include "inv_mpu_dmp_motion_driver.h"
+#include "inv_mpu.h"
+#include "math.h"
 
 #ifdef RT_USING_DFS
 /* dfs filesystem:ELM filesystem init */
@@ -56,16 +59,6 @@ ALIGN(RT_ALIGN_SIZE)
 static rt_uint8_t correct_stack[ 512 ];
 static struct rt_thread correct_thread;
 
-ALIGN(RT_ALIGN_SIZE)
-static rt_uint8_t mpu6050_stack[ 512 ];
-static struct rt_thread mpu6050_thread;
-static struct rt_semaphore mpu6050_sem;
-
-ALIGN(RT_ALIGN_SIZE)
-static rt_uint8_t l3g4200d_stack[ 512 ];
-static struct rt_thread l3g4200d_thread;
-static struct rt_semaphore l3g4200d_sem;
-
 u8 led_period[4];
 void led_thread_entry(void* parameter)
 {
@@ -100,8 +93,6 @@ s16 pitch_ctl[16],roll_ctl[16],yaw_ctl[16];
 
 rt_bool_t lost_ahrs=RT_FALSE;
 rt_tick_t last_ahrs;
-double p_lp=0,r_lp=0;
-#define LP_A 0.7
 void control_thread_entry(void* parameter)
 {
 	u16 throttle=0;
@@ -112,11 +103,8 @@ void control_thread_entry(void* parameter)
 	pitch_pid.expect=0;
 	roll_pid.expect=0;
 	yaw_pid.expect=0;
-	
 	pout_pid.expect=0;
-	pout_pid.p=2.5;
 	rout_pid.expect=0;
-	rout_pid.p=2.5;
 	
 	rt_kprintf("start control\n");
 	
@@ -224,19 +212,16 @@ void control_thread_entry(void* parameter)
 			if(throttle>30&&abs(ahrs.degree_pitch)<30&&abs(ahrs.degree_roll)<30)
 			{
 				
-				PID_xUpdate(&pout_pid	,ahrs.degree_pitch,ahrs.degree_pitch);
+				PID_xUpdate(&pout_pid	,ahrs.degree_pitch);
 				PID_SetTarget(&pitch_pid,-RangeValue(pout_pid.out,-80,80));
-				PID_xUpdate(&pitch_pid	,ahrs.gryo_pitch,p_lp);
+				PID_xUpdate(&pitch_pid	,ahrs.gryo_pitch);
 				
-				PID_xUpdate(&rout_pid	,ahrs.degree_roll,ahrs.degree_roll);
+				PID_xUpdate(&rout_pid	,ahrs.degree_roll);
 				PID_SetTarget(&roll_pid,-RangeValue(rout_pid.out,-80,80));
-				PID_xUpdate(&roll_pid	,ahrs.gryo_roll,r_lp);
+				PID_xUpdate(&roll_pid	,ahrs.gryo_roll);
 //				PID_Update(&pitch_pid	,ahrs.degree_pitch	,ahrs.gryo_pitch);
 //				PID_Update(&roll_pid	,ahrs.degree_roll	,ahrs.gryo_roll);
 				PID_Update(&yaw_pid		,ahrs.degree_yaw	,ahrs.gryo_yaw);
-				
-				p_lp=LP_A*p_lp+(1.0-LP_A)*ahrs.gryo_pitch;
-				r_lp=LP_A*r_lp+(1.0-LP_A)*ahrs.gryo_roll;
 				
 				Motor_Set1(throttle - pitch_pid.out - roll_pid.out + yaw_pid.out);
 				Motor_Set2(throttle - pitch_pid.out + roll_pid.out - yaw_pid.out);
@@ -363,10 +348,106 @@ void correct_thread_entry(void* parameter)
 }
 
 u8 en_out_ahrs=0;
-
+short gyro[3], accel[3], sensors;   
+static volatile Quaternion curq={1.0,0.0,0.0,0.0};
+#define q0 curq.q0
+#define q1 curq.q1
+#define q2 curq.q2
+#define q3 curq.q3
+#define DEFAULT_MPU_HZ  (200)
+#define q30  1073741824.0f
+static signed char gyro_orientation[9] = {-1, 0, 0,
+                                           0,-1, 0,
+                                           0, 0, 1};
+static  unsigned short inv_row_2_scale(const signed char *row)
+{
+    unsigned short b;
+    if (row[0] > 0)
+        b = 0;
+    else if (row[0] < 0)
+        b = 4;
+    else if (row[1] > 0)
+        b = 1;
+    else if (row[1] < 0)
+        b = 5;
+    else if (row[2] > 0)
+        b = 2;
+    else if (row[2] < 0)
+        b = 6;
+    else
+        b = 7;      // error
+    return b;
+}
+static  unsigned short inv_orientation_matrix_to_scalar(const signed char *mtx)
+{
+    unsigned short scalar;
+    scalar = inv_row_2_scale(mtx);
+    scalar |= inv_row_2_scale(mtx + 3) << 3;
+    scalar |= inv_row_2_scale(mtx + 6) << 6;
+    return scalar;
+}
+static void run_self_test(void)
+{
+    int result;
+    long gyro[3], accel[3];
+    result = mpu_run_self_test(gyro, accel);
+    if (result == 0x7) 
+    {
+        /* Test passed. We can trust the gyro data here, so let's push it down
+         * to the DMP.
+         */
+        float sens;
+        unsigned short accel_sens;
+        mpu_get_gyro_sens(&sens);
+        gyro[0] = (long)(gyro[0] * sens);
+        gyro[1] = (long)(gyro[1] * sens);
+        gyro[2] = (long)(gyro[2] * sens);
+        dmp_set_gyro_bias(gyro);
+        mpu_get_accel_sens(&accel_sens);
+        accel[0] *= accel_sens;
+        accel[1] *= accel_sens;
+        accel[2] *= accel_sens;
+        dmp_set_accel_bias(accel);
+    }
+}
+unsigned long sensor_timestamp;
+unsigned char more;
+long quat[4];
+#define PITCH_D -1.25
+#define ROLL_D 5
 void ahrs_thread_entry(void* parameter)
 {
-	rt_uint32_t e;
+	const double gyroscale = 2000;	
+	
+	while(1 == mpu_init());
+	//mpu_set_sensor
+	while(1 == mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL));  
+
+	//mpu_configure_fifo
+	while(1 == mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL));
+
+	//mpu_set_sample_rate
+	while(1 == mpu_set_sample_rate(DEFAULT_MPU_HZ));
+
+	//dmp_load_motion_driver_firmvare
+	while(1 == dmp_load_motion_driver_firmware());
+
+	//dmp_set_orientation
+	while(1 == dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation)));
+
+	//dmp_enable_feature
+	while(1 == dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
+		DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
+		DMP_FEATURE_GYRO_CAL));
+	
+	//dmp_set_fifo_rate
+	while(1 == dmp_set_fifo_rate(DEFAULT_MPU_HZ));
+
+	run_self_test();
+	
+	while(1 == mpu_set_dmp_state(1));
+	
+	rt_kprintf("start mpu6050\n");
 	
 	rt_kprintf("start ahrs\n");
 	
@@ -374,16 +455,22 @@ void ahrs_thread_entry(void* parameter)
 	
 	while(1)
 	{
-		rt_sem_release(&mpu6050_sem);
-//		rt_sem_release(&l3g4200d_sem);
-		
-		if(rt_event_recv(&ahrs_event,AHRS_EVENT_MPU6050|AHRS_EVENT_WRONG,
-						RT_EVENT_FLAG_OR|RT_EVENT_FLAG_CLEAR,
-						2,&e)==RT_EOK&&(e&AHRS_EVENT_WRONG)==0)
-		{
-			LED4(2);
+		dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);
+        if (sensors & INV_WXYZ_QUAT )
+        {
+            q0 = (double)quat[0] / q30;
+            q1 = (double)quat[1] / q30;
+            q2 = (double)quat[2] / q30;
+            q3 = (double)quat[3] / q30;
 			
-			ahrs_update();
+			ahrs.gryo_pitch		= -gyro[0] 	* gyroscale / 32767.0;
+			ahrs.gryo_roll		= -gyro[1] 	* gyroscale / 32767.0;
+			ahrs.gryo_yaw		= +gyro[2] 	* gyroscale / 32767.0;
+			
+			ahrs.degree_roll  = -asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3 +ROLL_D;   //+ Pitch_error; // pitch
+            ahrs.degree_pitch = -atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3+PITCH_D ;  //+ Roll_error; // roll
+            ahrs.degree_yaw = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3 ;  //+ Yaw_error;
+			
 			last_ahrs=rt_tick_get();
 			
 			if(en_out_ahrs)
@@ -394,76 +481,21 @@ void ahrs_thread_entry(void* parameter)
 				(u32)(1.0/ahrs.time_span));
 			rt_event_send(&ahrs_event,AHRS_EVENT_Update);
 		}
-		else
-		{
-			LED4(0);
-			Timer4_GetSec();
-			debug("ahrs timeout!\n");
-			if(rt_tick_get()-last_ahrs>1000)
-			{
-				lost_ahrs=RT_TRUE;
-				debug("ahrs connection wrong!\n");
-				Motor_Set(0,0,0,0);
-				rt_thread_detach(&control_thread);
-				return;
-			}
-		}
+//		else
+//		{
+//			LED4(0);
+//			Timer4_GetSec();
+//			debug("ahrs timeout!\n");
+//			if(rt_tick_get()-last_ahrs>1000)
+//			{
+//				lost_ahrs=RT_TRUE;
+//				debug("ahrs connection wrong!\n");
+//				Motor_Set(0,0,0,0);
+//				rt_thread_detach(&control_thread);
+//				return;
+//			}
+//		}
 		rt_thread_delay(2);
-	}
-}
-
-void mpu6050_thread_entry(void* parameter)
-{
-	s16 AccelGyro[6];
-	rt_sem_init(&mpu6050_sem,"mpu_t",0,RT_IPC_FLAG_FIFO);		
-	MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_1000);
-	MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);
-	
-	rt_kprintf("start mpu6050\n");
-	
-	while(1)
-	{
-		rt_sem_take(&mpu6050_sem,RT_WAITING_FOREVER);
-		if( MPU6050_TestConnection())
-		{
-			MPU6050_GetRawAccelGyro(AccelGyro);
-			
-			debug("%d,%d,%d,%d,%d,%d\n",
-				mpu_acc_x,mpu_acc_y,mpu_acc_z,mpu_gryo_pitch,mpu_gryo_roll,mpu_gryo_yaw);
-			if(AccelGyro[1]!=AccelGyro[4]&&AccelGyro[2]!=AccelGyro[5])
-			{
-				ahrs_put_mpu6050(AccelGyro);
-				rt_event_send(&ahrs_event,AHRS_EVENT_MPU6050);
-			}
-			
-		}
-		else
-		{
-			debug("error:lost mpu6050.\n");
-			rt_event_send(&ahrs_event,AHRS_EVENT_WRONG);
-		}
-	}
-}
-
-void l3g4200d_thread_entry(void* parameter)
-{
-	struct l3g4200d_data data;
-	rt_sem_init(&l3g4200d_sem,"l3g_t",0,RT_IPC_FLAG_FIFO);		
-	
-	rt_kprintf("start l3g4200d\n");
-	
-	while(1)
-	{
-		rt_sem_take(&l3g4200d_sem,RT_WAITING_FOREVER);
-		if( l3g4200d_TestConnection())
-		{
-			l3g4200d_read(&data);
-			debug("\t%d\t%d\t%d\n",data.x,data.y,data.z);
-		}
-		else
-		{
-			debug("error:lost l3g4200d.\n");
-		}
 	}
 }
 
@@ -476,7 +508,8 @@ void rt_init_thread_entry(void* parameter)
 	LED4(5);
 	rt_kprintf("start device init\n");
 	
-	rt_hw_i2c1_init();
+	//rt_hw_i2c1_init();
+    i2cInit();  
 	rt_hw_spi2_init();
 	
 	rt_thread_init(&led_thread,
@@ -489,18 +522,8 @@ void rt_init_thread_entry(void* parameter)
 	
 	spi_flash_init();
 	
-	mpu6050_init("i2c1");
+//	mpu6050_init("i2c1");
 //	bmp085_init("i2c1");
-//	l3g4200d_init("i2c1");
-//	while(1)
-//		if( l3g4200d_TestConnection())
-//		{
-//			struct l3g4200d_data data;
-//			l3g4200d_read(&data);
-//			debug("\t%d\t%d\t%d\n",data.x,data.y,data.z);
-//		}
-//		else
-//			debug("retry\n");
 	
 	rt_kprintf("device init succeed\n");
 	
@@ -516,7 +539,11 @@ void rt_init_thread_entry(void* parameter)
 	//default settings
 	PID_Init(&pitch_pid,3.2,0,1.2);
 	PID_Init(&roll_pid,3.2,0,1.2);
-	PID_Init(&yaw_pid,0,0,2.5);
+	PID_Init(&yaw_pid,0,0,3);
+	PID_Init(&pout_pid,2.5,0,0);
+	PID_Init(&rout_pid,2.5,0,0);
+//	PID_Init(&pout_pid,0,0,0);
+//	PID_Init(&rout_pid,0,0,0);
 	
 	load_settings(&settings,"/setting",&pitch_pid,&roll_pid);
 	
@@ -540,28 +567,17 @@ void rt_init_thread_entry(void* parameter)
 	}
 	
 	get_pid();
-	//PID_Init(&yaw_pid,0,0,0);
+	PID_Set_Filt_Alpha(&pitch_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&roll_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&yaw_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&pout_pid,1.0/125.0,20.0);
+	PID_Set_Filt_Alpha(&rout_pid,1.0/125.0,20.0);
+	pitch_pid.d/=10;
+	roll_pid.d/=10;
 	
 	LED4(0);
 	
 	rt_event_init(&ahrs_event,"ahrs_e",RT_IPC_FLAG_FIFO);
-	
-	rt_thread_init(&mpu6050_thread,
-					"mpu6050",
-					mpu6050_thread_entry,
-					RT_NULL,
-                    mpu6050_stack,
-					512, 8, 10);
-    rt_thread_startup(&mpu6050_thread);
-	
-	
-	rt_thread_init(&l3g4200d_thread,
-					"l3g4200d",
-					l3g4200d_thread_entry,
-					RT_NULL,
-                    l3g4200d_stack,
-					512, 8, 10);
-    //rt_thread_startup(&l3g4200d_thread);
 	
 	rt_thread_init(&ahrs_thread,
 					"ahrs",
